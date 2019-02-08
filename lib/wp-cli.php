@@ -1,0 +1,8 @@
+<?php
+
+// Only load this plugin once and bail if WP CLI is not present
+if (!defined('WP_CLI')) {
+    return;
+}
+
+\WP_CLI::add_command('fixture', \Pretzlaw\WordPress\Fixtures\Cli\FixtureCommand::class);

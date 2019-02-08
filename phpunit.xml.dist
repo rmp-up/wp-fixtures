@@ -1,0 +1,26 @@
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.5/phpunit.xsd"
+        colors="true"
+        convertNoticesToExceptions="false"
+        convertDeprecationsToExceptions="false"
+        bootstrap="lib/Pretzlaw/WordPress/Fixtures/bootstrap.php"
+>
+    <testsuite name="default">
+        <directory>lib/Pretzlaw/WordPress/Fixtures/Test</directory>
+    </testsuite>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">lib/Pretzlaw/WordPress/Fixtures</directory>
+            <exclude>
+                <directory>lib/Pretzlaw/WordPress/Fixtures/Test</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="var/phpunit" lowUpperBound="50" highLowerBound="80"/>
+        <log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
+    </logging>
+</phpunit>

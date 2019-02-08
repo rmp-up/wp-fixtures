@@ -1,0 +1,38 @@
+{
+  "name": "rmp-up/wp-fixtures",
+  "description": "Expressive fixtures persistence in WordPress (and some plugins)",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "Pretzlaw\\WordPress\\Fixtures\\": "lib/Pretzlaw/WordPress/Fixtures"
+    },
+    "files": [
+      "lib/wp-cli.php"
+    ]
+  },
+  "require": {
+    "nelmio/alice": "~3",
+    "wp-cli/entity-command": "^2.0"
+  },
+  "require-dev": {
+    "pretzlaw/wp-integration-test": "0.2.*",
+    "wp-cli/core-command": "^2.0",
+    "wp-cli/config-command": "^2.0"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "authors": [
+    {
+      "name": "Pretzlaw",
+      "email": "mail@mike-pretzlaw.de"
+    }
+  ],
+  "keywords": [
+    "WordPress",
+    "Fixture",
+    "Faker",
+    "Data",
+    "Test"
+  ]
+}
