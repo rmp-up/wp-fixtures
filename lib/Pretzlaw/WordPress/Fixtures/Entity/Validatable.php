@@ -24,8 +24,6 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WordPress\Fixtures\Entity;
 
-use Pretzlaw\WordPress\Fixtures\Repository\RepositoryInterface;
-
 /**
  * Sanitizable
  *
@@ -35,9 +33,7 @@ use Pretzlaw\WordPress\Fixtures\Repository\RepositoryInterface;
 interface Validatable
 {
     /**
-     * @throws InvalidEntityException in case of problems.
-     *
-     * @param RepositoryInterface $repo
+     * @param string $fixtureName Name as given in the fixture config.
      */
-    public function validate();
+    public function validate(string $fixtureName);
 }

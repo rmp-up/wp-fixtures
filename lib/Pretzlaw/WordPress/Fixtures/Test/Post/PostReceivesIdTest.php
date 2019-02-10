@@ -48,7 +48,7 @@ class PostReceivesIdTest extends AbstractTestCase
         static::assertEquals('publish', $post->post_status);
         static::assertEmpty($post->ID);
 
-        $this->posts()->persist($post);
+        $this->posts()->persist($post, uniqid('', true));
 
         static::assertIsInt($post->ID);
         static::assertEquals($post->post_title, get_the_title($post->ID));

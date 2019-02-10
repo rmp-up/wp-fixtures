@@ -36,13 +36,13 @@ use Pretzlaw\WordPress\Fixtures\Entity\Validatable;
 abstract class AbstractRepository implements RepositoryInterface
 {
     /**
-     * @param $object
+     * @inheritdoc
      */
-    public function persist($object)
+    public function persist($object, string $fixtureName)
     {
-        $sanitized = $this->parse($object);
+        $sanitized = $this->parse($object, $fixtureName);
 
-        $id = $this->find($sanitized);
+        $id = $this->find($sanitized, $fixtureName);
         if ($id !== null) {
             $object->ID = $id;
             $sanitized->ID = $id;
@@ -67,18 +67,19 @@ abstract class AbstractRepository implements RepositoryInterface
 
     /**
      * @param $object
+     * @param string|null $fixtureName
      * @return Sanitizable|\stdClass
      */
-    protected function parse($object)
+    protected function parse($object, string $fixtureName = null)
     {
         $double = clone $object;
 
         if ($double instanceof Sanitizable) {
-            $double->sanitize();
+            $double->sanitize($fixtureName);
         }
 
         if ($double instanceof Validatable) {
-            $double->validate();
+            $double->validate($fixtureName);
         }
 
         return $double;

@@ -43,7 +43,7 @@ class User extends \stdClass implements Validatable, Sanitizable
     public $user_login;
     public $user_pass;
 
-    public function validate()
+    public function validate(string $fixtureName)
     {
         if (isset($this->ID)) {
             throw new InvalidFieldException($this, 'ID', 'Using ID is not allowed due to wp_insert_user');
@@ -51,12 +51,17 @@ class User extends \stdClass implements Validatable, Sanitizable
     }
 
     /**
+     * @param string $fixtureName
      * @return void a clone of the sanitized object
      */
-    public function sanitize()
+    public function sanitize(string $fixtureName)
     {
         $this->applyAbbreviations([static::PREFIX]);
         $this->seed();
+
+        if (empty($this->user_login)) {
+            $this->user_login = $fixtureName;
+        }
     }
 
     /**

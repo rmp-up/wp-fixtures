@@ -32,11 +32,22 @@ namespace Pretzlaw\WordPress\Fixtures\Repository;
  */
 interface RepositoryInterface
 {
-    public function persist($object);
+    /**
+     * @param \stdClass $object Fixture data.
+     * @param string $fixtureName Key as provided in fixture config
+     */
+    public function persist($object, string $fixtureName);
 
     /**
      * @param \stdClass $object Fixture to lookup.
+     * @param string $fixtureName
      * @return int|null ID or null when not found
      */
-    public function find($object);
+    public function find($object, string $fixtureName);
+
+    /**
+     * @param \stdClass $object
+     * @param string $fixtureName
+     */
+    public function delete($object, string $fixtureName);
 }

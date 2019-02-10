@@ -73,9 +73,10 @@ class Users extends AbstractRepository
 
     /**
      * @param User $object
+     * @param string|null $fixtureName
      * @return int|null ID or null when not found.
      */
-    public function find($object)
+    public function find($object, string $fixtureName = null)
     {
         $found = null;
 
@@ -92,5 +93,22 @@ class Users extends AbstractRepository
         }
 
         return null;
+    }
+
+    /**
+     * @param \stdClass $object
+     * @param string $fixtureName
+     */
+    public function delete($object, string $fixtureName)
+    {
+        $id = $this->find($object, $fixtureName);
+
+        if (null === $id) {
+            return;
+        }
+
+        if (!wp_delete_user($id)) {
+            throw new \RuntimeException('Could not delete user ' . $id);
+        }
     }
 }

@@ -35,9 +35,8 @@ use Pretzlaw\WordPress\Fixtures\Repository\RepositoryInterface;
 interface Sanitizable
 {
     /**
-     * @param RepositoryInterface $repo
-     *
+     * @param string $fixtureName Name as given in the fixture configuration.
      * @return \stdClass a clone of the sanitized object
      */
-    public function sanitize();
+    public function sanitize(string $fixtureName);
 }

@@ -51,6 +51,6 @@ class ValidateBeforePersistTest extends AbstractTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Just a test');
-        $this->posts()->persist($mock);
+        $this->posts()->persist($mock, '');
     }
 }

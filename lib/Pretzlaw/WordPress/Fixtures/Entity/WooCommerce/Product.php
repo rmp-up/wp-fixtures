@@ -40,8 +40,6 @@ class Product extends Post
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->abbreviations = array_merge(
             $this->abbreviations,
             [
@@ -51,6 +49,14 @@ class Product extends Post
         );
     }
 
-
     public $post_type = 'product';
+
+    public function sanitize(string $fixtureName)
+    {
+        parent::sanitize($fixtureName);
+
+        if (!array_key_exists('_sku', $this->meta_input)) {
+            $this->meta_input['_sku'] = $fixtureName;
+        }
+    }
 }

@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WordPress\Fixtures\Repository\WooCommerce;
 
+use Pretzlaw\WordPress\Fixtures\Entity\WooCommerce\Product;
 use Pretzlaw\WordPress\Fixtures\Repository\Posts;
 
 /**
@@ -35,7 +36,7 @@ use Pretzlaw\WordPress\Fixtures\Repository\Posts;
 class Products extends Posts
 {
     /**
-     * @param \Pretzlaw\WordPress\Fixtures\Entity\WooCommerce\Product $object
+     * @param Product $object
      */
     protected function update($object)
     {
@@ -52,4 +53,19 @@ class Products extends Posts
         wp_update_post($object);
     }
 
+    /**
+     * @param Product $object
+     * @param string|null $fixtureName
+     * @return int|null
+     */
+    public function find($object, string $fixtureName = null)
+    {
+        $found = wc_get_product_id_by_sku($fixtureName);
+
+        if (0 !== $found) {
+            return $found;
+        }
+
+        return parent::find($object, $fixtureName);
+    }
 }

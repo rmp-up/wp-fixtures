@@ -86,7 +86,7 @@ class AbbreviationsTest extends AbstractTestCase
 
         $fixtureData = $this->fixtureData('abbrev_user');
         $sanitized = clone $user;
-        $sanitized->sanitize();
+        $sanitized->sanitize('abbrev_user');
 
         foreach (get_object_vars($user) as $field => $value) {
             if (0 !== strpos($field, User::PREFIX)) {
@@ -133,6 +133,6 @@ class AbbreviationsTest extends AbstractTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageRegExp('/Value would be overwritten/');
 
-        $user->sanitize();
+        $user->sanitize('abbrev_user');
     }
 }

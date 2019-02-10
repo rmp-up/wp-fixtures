@@ -70,12 +70,12 @@ class ResolveByIdTest extends AbstractTestCase
         $post1 = $this->fixture('post_1');
         $post2 = $this->fixture('post_2');
 
-        $this->posts()->persist($post1);
+        $this->posts()->persist($post1, uniqid('', true));
 
         static::assertNotNull($post1->ID);
         $post2->ID = $post1->ID;
 
-        $this->posts()->persist($post2);
+        $this->posts()->persist($post2, uniqid('', true));
 
         $actual = get_post($post1->ID);
 
