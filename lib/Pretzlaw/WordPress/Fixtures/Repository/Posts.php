@@ -41,9 +41,10 @@ class Posts extends AbstractRepository
 
     /**
      * @param Post $object
+     * @param string|null $fixtureName
      * @return int|null
      */
-    public function find($object)
+    public function find($object, string $fixtureName = null)
     {
         // By ID
         if (!empty($object->ID)) {
@@ -90,5 +91,14 @@ class Posts extends AbstractRepository
         }
 
         return $postId;
+    }
+
+    public function delete($object, string $fixtureName)
+    {
+        $id = $this->find($object, $fixtureName);
+
+        if (null !== $id) {
+            wp_delete_post($id);
+        }
     }
 }

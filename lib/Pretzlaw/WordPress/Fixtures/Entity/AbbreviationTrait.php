@@ -107,6 +107,4 @@ trait AbbreviationTrait
             unset($this->$source, $destination);
         }
     }
-
-    abstract public function sanitize();
 }

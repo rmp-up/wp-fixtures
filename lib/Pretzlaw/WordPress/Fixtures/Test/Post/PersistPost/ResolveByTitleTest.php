@@ -88,8 +88,8 @@ class ResolveByTitleTest extends AbstractTestCase
 
         static::assertNull(get_page_by_title($first->post_title, OBJECT, 'post'));
 
-        $this->posts()->persist($first);
-        $this->posts()->persist($second);
+        $this->posts()->persist($first, uniqid('', true));
+        $this->posts()->persist($second, uniqid('', true));
 
         $actual = get_page_by_title($first->post_title, OBJECT, 'post');
         static::assertInstanceOf(\WP_Post::class, $actual);
@@ -103,7 +103,7 @@ class ResolveByTitleTest extends AbstractTestCase
 
         static::assertNull(get_page_by_title($post->post_title, OBJECT, 'post'));
 
-        $this->posts()->persist($post);
+        $this->posts()->persist($post, uniqid('', true));
 
         $created = get_page_by_title($post->post_title, OBJECT, 'post');
 

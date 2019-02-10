@@ -43,7 +43,7 @@ class User extends \stdClass implements Validatable, Sanitizable
     public $user_login;
     public $user_pass;
 
-    public function validate()
+    public function validate(string $fixtureName)
     {
         if (isset($this->ID)) {
             throw new InvalidFieldException($this, 'ID', 'Using ID is not allowed due to wp_insert_user');
@@ -51,12 +51,13 @@ class User extends \stdClass implements Validatable, Sanitizable
     }
 
     /**
+     * @param string $fixtureName
      * @return void a clone of the sanitized object
      */
-    public function sanitize()
+    public function sanitize(string $fixtureName)
     {
         $this->applyAbbreviations([static::PREFIX]);
-        $this->seed();
+        $this->seed($fixtureName);
     }
 
     /**
@@ -65,18 +66,24 @@ class User extends \stdClass implements Validatable, Sanitizable
      * Note: This needs to run after expandAbbreviations.
      *
      * @see self::expandAbbreviations
+     * @param string $fixtureName
      */
-    private function seed()
+    private function seed(string $fixtureName)
     {
-        switch (true) {
-            case empty($this->user_email):
-                $this->user_email = 'fixture-' . date('U') . substr(microtime(), 1, 5) . '@example.org';
+        if (empty($this->user_login)) {
+            $this->user_login = $fixtureName;
 
-            case empty($this->user_pass):
-                $this->user_pass = uniqid('', true);
-
-            case empty($this->user_login):
+            if (!empty($this->user_email)) {
                 $this->user_login = $this->user_email;
+            }
+        }
+
+        if (empty($this->user_email)) {
+            $this->user_email = $fixtureName . '@exmaple.org';
+        }
+
+        if (empty($this->user_pass)) {
+            $this->user_pass = uniqid('', true);
         }
     }
 }

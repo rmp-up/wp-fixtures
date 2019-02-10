@@ -22,10 +22,7 @@
 
 namespace Pretzlaw\WordPress\Fixtures\Test;
 
-use PHPUnit\Framework\TestCase;
 use Pretzlaw\WordPress\Fixtures\Entity\User;
-use Pretzlaw\WordPress\Fixtures\Repository\Users;
-use Pretzlaw\WPInt\Traits\PostTypeAssertions;
 
 /**
  * User
@@ -73,7 +70,7 @@ class UserTest extends AbstractTestCase
         $user = $this->fixture('user_1');
         static::assertInstanceOf(User::class, $user);
 
-        $this->users()->persist($user);
+        $this->users()->persist($user, 'user_1');
         static::assertNotEmpty($user->ID);
 
         $actual = get_user_by('id', $user->ID);

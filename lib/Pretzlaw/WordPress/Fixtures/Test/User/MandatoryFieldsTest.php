@@ -91,7 +91,7 @@ class MandatoryFieldsTest extends AbstractTestCase
     public function testFillsNothing()
     {
         $user = $this->fixture('nothing');
-        $user->sanitize();
+        $user->sanitize(uniqid('', true));
 
         foreach (array_keys($this->mandatory) as $field) {
             static::assertNotEmpty($user->$field, $field);
@@ -107,7 +107,7 @@ class MandatoryFieldsTest extends AbstractTestCase
 
         static::assertEmpty($user->$mandatoryField);
 
-        $user->sanitize();
+        $user->sanitize(uniqid('', true));
 
         static::assertNotEmpty($user->$mandatoryField);
     }
@@ -125,7 +125,7 @@ class MandatoryFieldsTest extends AbstractTestCase
 
         static::assertEmpty($user->user_login);
 
-        $user->sanitize();
+        $user->sanitize(uniqid('', true));
 
         static::assertNotEmpty($user->user_login);
         static::assertEquals($user->user_email, $user->user_login);

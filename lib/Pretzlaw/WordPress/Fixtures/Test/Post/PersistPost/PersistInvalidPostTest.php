@@ -54,6 +54,6 @@ class PersistInvalidPostTest extends AbstractTestCase
 
         $post = new Post();
 
-        $this->posts()->persist($post);
+        $this->posts()->persist($post, uniqid('', true));
     }
 }

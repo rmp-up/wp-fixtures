@@ -48,9 +48,9 @@ class ProductTest extends AbstractTestCase
     public function testSampleProduct()
     {
         /** @var Product $product */
-        $product = $this->loadFromDocComment(1, 'product_1');
+        $product = $this->loadFromDocComment(0, 'product_1');
 
-        $this->repo()->persist($product);
+        $this->repo()->persist($product, 'product_1');
 
         static::assertIsInt($product->ID);
 

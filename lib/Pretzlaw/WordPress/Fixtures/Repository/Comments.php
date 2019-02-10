@@ -32,12 +32,12 @@ namespace Pretzlaw\WordPress\Fixtures\Repository;
  */
 class Comments implements RepositoryInterface
 {
-    public function persist($object)
+    public function persist($object, string $fixtureName = null)
     {
         // TODO: Implement persist() method.
     }
 
-    public function find($object)
+    public function find($object, string $fixtureName = null)
     {
         // TODO: Implement find() method.
     }

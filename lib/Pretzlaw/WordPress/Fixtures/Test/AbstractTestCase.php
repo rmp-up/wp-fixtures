@@ -189,7 +189,7 @@ abstract class AbstractTestCase extends TestCase
 
     /**
      * @param int $int
-     * @return array
+     * @return array|\stdClass
      */
     protected function loadFromDocComment(int $int, $key = null)
     {
@@ -227,13 +227,15 @@ abstract class AbstractTestCase extends TestCase
         }
 
         $matches = [];
-        preg_match_all('/(?<=\`\`\`yaml).*(?=\`\`\`)/su', $docComment, $matches);
+        preg_match_all('/(?<=\`\`\`yaml)[^`]*(?=\`\`\`)/su', $docComment, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $key => $match) {
-            $matches[$key] = trim(preg_replace('/^\s\*\s/mu', '', reset($match)));
+            if ($key === $index) {
+                return trim(preg_replace('/^\s\*\s/mu', '', reset($match)));
+            }
         }
 
-        return $matches[$index - 1];
+        return '';
     }
 
     private $factory;

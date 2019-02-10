@@ -41,7 +41,7 @@ class PersistPostTest extends AbstractTestCase
      */
     public function testPersistAllData($post)
     {
-        $this->posts()->persist($post);
+        $this->posts()->persist($post, uniqid('', true));
         $actual = get_post($post->ID);
 
         foreach (['post_title', 'post_content'] as $key) {

@@ -64,6 +64,6 @@ class UnsupportedFieldsTest extends AbstractTestCase
     public function testId()
     {
         $this->expectExceptionMessage('Using ID is not allowed due to wp_insert_user');
-        $this->fixture('id')->validate();
+        $this->fixture('id')->validate(uniqid('', true));
     }
 }

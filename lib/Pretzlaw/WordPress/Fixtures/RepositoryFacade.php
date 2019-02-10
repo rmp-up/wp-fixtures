@@ -44,16 +44,25 @@ class RepositoryFacade implements RepositoryInterface
         $this->factory = $factory;
     }
 
-    public function persist($object)
+    public function persist($object, string $fixtureName)
     {
-        $this->factory->forEntity($object)->persist($object);
+        $this->factory->forEntity($object)->persist($object, $fixtureName);
     }
 
     /**
      * @inheritdoc
      */
-    public function find($object)
+    public function find($object, string $fixtureName)
     {
-        return $this->factory->forEntity($object)->find($object);
+        return $this->factory->forEntity($object)->find($object, $fixtureName);
+    }
+
+    /**
+     * @param \stdClass $object
+     * @param string $fixtureName
+     */
+    public function delete($object, string $fixtureName)
+    {
+        return $this->factory->forEntity($object)->delete($object, $fixtureName);
     }
 }

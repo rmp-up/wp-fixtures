@@ -200,26 +200,23 @@ class Post extends \stdClass implements Sanitizable
 
     public $tax_input;
 
-    public function __construct()
-    {
-        $this->defaultFixtures = [
-            'post_title' => uniqid('Mandatory field with random data created by fixture', true),
-            'post_content' => uniqid('Mandatory content with random data created by fixture', true),
-            'post_excerpt' => uniqid('Mandatory excerpt with random data created by fixture', true),
-        ];
-    }
+    public $meta_input = [];
 
-    public function sanitize()
+    public function sanitize(string $fixtureName)
     {
         $this->applyAbbreviations(['post_']);
         $this->applyDefaults();
 
         if (empty($this->post_content)) {
-            $this->post_content = uniqid('Random content made by fixture', true);
+            $this->post_content = uniqid('Random content for ' . $fixtureName . ' ', true);
         }
 
         if (empty($this->post_title)) {
-            $this->post_content = uniqid('Random title made by fixture', true);
+            $this->post_title = $fixtureName;
+        }
+
+        if (empty($this->post_excerpt)) {
+            $this->post_excerpt = $fixtureName . ' excerpt';
         }
 
         if ($this->post_author instanceof User) {
