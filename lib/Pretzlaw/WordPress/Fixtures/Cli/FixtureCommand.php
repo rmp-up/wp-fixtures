@@ -73,10 +73,13 @@ class FixtureCommand extends \WP_CLI
             $compiled = [];
             foreach ($arguments as $path) {
                 $fixtureFiles = $this->fetchFiles($path);
-                \WP_CLI::debug(sprintf('Found %d fixtures in "%s"', $fixtureFiles, $path));
+                \WP_CLI::debug(sprintf('Found %d configurations in "%s"', count($fixtureFiles), $path));
 
                 foreach ($fixtureFiles as $fixtureFile) {
                     $fixtures = $this->loader->loadFile($fixtureFile, [], $compiled);
+                    \WP_CLI::debug(
+                        sprintf('Found %d new objects in %s', count($fixtures) - count($compiled), $fixtureFile)
+                    );
 
                     foreach ($fixtures->getObjects() as $key => $object) {
                         if (array_key_exists($key, $compiled)) {
@@ -84,7 +87,7 @@ class FixtureCommand extends \WP_CLI
                             continue;
                         }
 
-                        $this->persist($object, $options);
+                        $this->persist($object, $key, $options);
                         $compiled[$key] = $object;
                     }
                 }
@@ -142,10 +145,10 @@ class FixtureCommand extends \WP_CLI
      */
     private $loader;
 
-    private function persist($object, array $options)
+    private function persist($object, string $key, array $options)
     {
         if (!$options['force']) {
-            $exists = $this->repo->find($object);
+            $exists = $this->repo->find($object, $key);
 
             if (null !== $exists) {
                 throw new \RuntimeException(

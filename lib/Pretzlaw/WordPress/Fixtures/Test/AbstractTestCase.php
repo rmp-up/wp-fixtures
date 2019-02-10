@@ -189,7 +189,7 @@ abstract class AbstractTestCase extends TestCase
 
     /**
      * @param int $int
-     * @return array
+     * @return array|\stdClass
      */
     protected function loadFromDocComment(int $int, $key = null)
     {

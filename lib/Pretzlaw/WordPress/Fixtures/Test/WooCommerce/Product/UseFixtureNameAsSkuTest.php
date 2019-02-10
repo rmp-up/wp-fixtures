@@ -26,7 +26,6 @@ namespace Pretzlaw\WordPress\Fixtures\Test\WooCommerce\Product;
 
 use Pretzlaw\WordPress\Fixtures\Entity\WooCommerce\Product;
 use Pretzlaw\WordPress\Fixtures\Test\AbstractTestCase;
-use function WP_CLI\Utils\wp_clear_object_cache;
 
 /**
  * Defaults

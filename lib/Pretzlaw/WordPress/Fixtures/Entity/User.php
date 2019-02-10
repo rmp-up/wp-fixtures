@@ -57,11 +57,7 @@ class User extends \stdClass implements Validatable, Sanitizable
     public function sanitize(string $fixtureName)
     {
         $this->applyAbbreviations([static::PREFIX]);
-        $this->seed();
-
-        if (empty($this->user_login)) {
-            $this->user_login = $fixtureName;
-        }
+        $this->seed($fixtureName);
     }
 
     /**
@@ -70,18 +66,24 @@ class User extends \stdClass implements Validatable, Sanitizable
      * Note: This needs to run after expandAbbreviations.
      *
      * @see self::expandAbbreviations
+     * @param string $fixtureName
      */
-    private function seed()
+    private function seed(string $fixtureName)
     {
-        switch (true) {
-            case empty($this->user_email):
-                $this->user_email = 'fixture-' . date('U') . substr(microtime(), 1, 5) . '@example.org';
+        if (empty($this->user_login)) {
+            $this->user_login = $fixtureName;
 
-            case empty($this->user_pass):
-                $this->user_pass = uniqid('', true);
-
-            case empty($this->user_login):
+            if (!empty($this->user_email)) {
                 $this->user_login = $this->user_email;
+            }
+        }
+
+        if (empty($this->user_email)) {
+            $this->user_email = $fixtureName . '@exmaple.org';
+        }
+
+        if (empty($this->user_pass)) {
+            $this->user_pass = uniqid('', true);
         }
     }
 }

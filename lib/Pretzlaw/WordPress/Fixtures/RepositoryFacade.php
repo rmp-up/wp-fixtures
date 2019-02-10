@@ -52,7 +52,7 @@ class RepositoryFacade implements RepositoryInterface
     /**
      * @inheritdoc
      */
-    public function find($object, string $fixtureName = null)
+    public function find($object, string $fixtureName)
     {
         return $this->factory->forEntity($object)->find($object, $fixtureName);
     }
