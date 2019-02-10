@@ -145,10 +145,10 @@ class FixtureCommand extends \WP_CLI
      */
     private $loader;
 
-    private function persist($object, string $key, array $options)
+    private function persist($object, string $fixtureName, array $options)
     {
         if (!$options['force']) {
-            $exists = $this->repo->find($object, $key);
+            $exists = $this->repo->find($object, $fixtureName);
 
             if (null !== $exists) {
                 throw new \RuntimeException(
@@ -157,6 +157,6 @@ class FixtureCommand extends \WP_CLI
             }
         }
 
-        $this->repo->persist($object);
+        $this->repo->persist($object, $fixtureName);
     }
 }
