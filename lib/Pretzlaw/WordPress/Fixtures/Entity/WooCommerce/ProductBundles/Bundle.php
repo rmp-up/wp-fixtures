@@ -36,9 +36,9 @@ class Bundle extends Product
 {
     public $products = [];
 
-    public function sanitize()
+    public function sanitize(string $fixureName)
     {
-        parent::sanitize();
+        parent::sanitize($fixureName);
 
         $this->tax_input['product_type'] = 'bundle';
     }

@@ -41,4 +41,13 @@ class Comments implements RepositoryInterface
     {
         // TODO: Implement find() method.
     }
+
+    /**
+     * @param \stdClass $object
+     * @param string $fixtureName
+     */
+    public function delete($object, string $fixtureName)
+    {
+        // TODO: Implement delete() method.
+    }
 }
