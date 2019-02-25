@@ -14,6 +14,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">lib/Pretzlaw/WordPress/Fixtures</directory>
             <exclude>
+                <file>lib/Pretzlaw/WordPress/Fixtures/Cli/FixtureCommand.php</file>
                 <directory>lib/Pretzlaw/WordPress/Fixtures/Test</directory>
             </exclude>
         </whitelist>
