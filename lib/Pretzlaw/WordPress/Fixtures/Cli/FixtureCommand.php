@@ -67,6 +67,7 @@ class FixtureCommand extends \WP_CLI
             $options
         );
 
+        add_filter('user_has_cap', [$this, 'enableAllCapabilities'], 10, 2);
 
         $key = '';
         try {
@@ -103,6 +104,17 @@ class FixtureCommand extends \WP_CLI
             \WP_CLI::error($message);
         }
     }
+
+    public function enableAllCapabilities($capabilities, $caps)
+    {
+        foreach ($caps as $cap) {
+            // allow all.
+            $capabilities[$cap] = true;
+        }
+
+        return $capabilities;
+    }
+
 
     private function fetchFiles($path, $prefix = '', $suffix = '.yaml'): array
     {
