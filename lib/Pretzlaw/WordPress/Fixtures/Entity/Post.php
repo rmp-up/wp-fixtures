@@ -35,6 +35,7 @@ class Post extends \stdClass implements Sanitizable
 {
     use AbbreviationTrait;
     use DefaultsTrait;
+    use ManageTaxonomies;
 
     /**
      * Post ID.
@@ -222,5 +223,7 @@ class Post extends \stdClass implements Sanitizable
         if ($this->post_author instanceof User) {
             $this->post_author = $this->post_author->ID;
         }
+
+        $this->resolveTerms($fixtureName);
     }
 }
