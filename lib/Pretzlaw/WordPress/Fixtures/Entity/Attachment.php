@@ -28,7 +28,7 @@ class Attachment extends \stdClass implements Sanitizable
      * @since 3.5.0
      * @var string
      */
-    public $post_content;
+    public $post_content = '';
 
     /**
      * The post's status.
