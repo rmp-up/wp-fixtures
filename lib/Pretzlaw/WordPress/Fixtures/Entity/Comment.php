@@ -45,7 +45,7 @@ class Comment extends \stdClass implements Sanitizable
         ];
     }
 
-    public function sanitize()
+    public function sanitize(string $fixtureName)
     {
         $this->applyAbbreviations(['comment_']);
 

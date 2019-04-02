@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Comments.php
+ * Order.php
  *
  * LICENSE: This source file is created by the company around Mike Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -17,37 +17,41 @@
  * @copyright  2019 Mike Pretzlaw
  * @license    https://mike-pretzlaw.de/license-generic.txt
  * @link       https://project.mike-pretzlaw.de/pretzlaw/wp-fixtures
- * @since      2019-02-03
+ * @since      2019-02-25
  */
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WordPress\Fixtures\Repository;
+namespace Pretzlaw\WordPress\Fixtures\Entity\WooCommerce;
+
+use Pretzlaw\WordPress\Fixtures\Entity\User;
 
 /**
- * Comments
+ * Order
  *
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
- * @since      2019-02-03
+ * @since      2019-02-25
  */
-class Comments implements RepositoryInterface
+class Order extends \stdClass
 {
-    public function persist($object, string $fixtureName = null)
-    {
-        // TODO: Implement persist() method.
-    }
-
-    public function find($object, string $fixtureName = null)
-    {
-        // TODO: Implement find() method.
-    }
+    public $id;
+    /**
+     * @var Product[]
+     */
+    public $products;
 
     /**
-     * @param \stdClass $object
-     * @param string $fixtureName
+     * @var User
      */
-    public function delete($object, string $fixtureName)
-    {
-        // TODO: Implement delete() method.
-    }
+    public $user;
+
+    /**
+     * @var string
+     */
+    public $status;
+
+    /**
+     * @var string
+     */
+    public $customer_note;
 }
