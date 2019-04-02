@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace Pretzlaw\WordPress\Fixtures\Repository\WooCommerce\ProductBundles;
 
 use Pretzlaw\WordPress\Fixtures\Entity\Sanitizable;
+use Pretzlaw\WordPress\Fixtures\Entity\WooCommerce\Product;
 use Pretzlaw\WordPress\Fixtures\Entity\WooCommerce\ProductBundles\Bundle;
 use Pretzlaw\WordPress\Fixtures\Repository\RepositoryInterface;
 use Pretzlaw\WordPress\Fixtures\Repository\WooCommerce\Products;
@@ -43,12 +44,16 @@ class Bundles extends Products
     protected function update($object)
     {
         parent::update($object);
+        $this->setProducts($object->ID, $object->products);
     }
 
 
     /**
      * @param Bundle $double
+     *
      * @return int
+     *
+     * @throws \Pretzlaw\WordPress\Fixtures\Repository\PersistException
      */
     protected function create($double): int
     {
@@ -61,7 +66,20 @@ class Bundles extends Products
     private function setProducts($bundleId, array $products)
     {
         $bundle = wc_get_product($bundleId);
-        $bundle->set_bundled_data_items($products);
-        $bundle->save();
+
+        $bundledDataItems = [];
+        foreach ($products as $product) {
+            if ($product instanceof Product) {
+                $bundledDataItems[$product->ID] = ['product_id' => $product->ID];
+                continue;
+            }
+
+            throw new \RuntimeException( 'Unkown data type can not be added to bundle' );
+        }
+
+        if ($bundledDataItems) {
+            $bundle->set_bundled_data_items($bundledDataItems);
+            $bundle->save();
+        }
     }
 }

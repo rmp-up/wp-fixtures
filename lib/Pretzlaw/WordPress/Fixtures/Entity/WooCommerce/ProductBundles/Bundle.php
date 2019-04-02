@@ -42,6 +42,4 @@ class Bundle extends Product
 
         $this->tax_input['product_type'] = 'bundle';
     }
-
-
 }
