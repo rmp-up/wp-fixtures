@@ -90,6 +90,8 @@ class Posts extends AbstractRepository
             throw new PersistException($double, $postId);
         }
 
+        $double->ID = $postId;
+
         return $postId;
     }
 
