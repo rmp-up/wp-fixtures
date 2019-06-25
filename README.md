@@ -108,7 +108,7 @@ This is simply a list of releases and their EOL:
   
 ## License
 
-Copyright 2018 Mike Pretzlaw (mike-pretzlaw.de)
+Copyright 2019 Mike Pretzlaw (mike-pretzlaw.de)
 
 Permission is hereby granted, free of charge,
 to any person obtaining a copy of this software
