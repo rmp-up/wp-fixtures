@@ -66,8 +66,6 @@ before_install:
     wpackagist-plugin/woocommerce:$WOO_VERSION
 
 install:
-  - composer install
-  # Using WP-CLI instead of Composer because this way we can use the env matrix (above).
   - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1" --skip-check
   - vendor/bin/wp --allow-root core install --skip-email
   - vendor/bin/wp --allow-root plugin activate --all
@@ -77,7 +75,7 @@ install:
 script:
   - composer validate --strict --no-check-lock
   - vendor/bin/phpunit --coverage-clover coverage.xml
-  - vendor/bin/phpstan analyse lib/
+  - vendor/bin/phpstan analyse --no-progress lib/
 
 after_script:
   # upload coverage.xml file to Coveralls to analyze it
