@@ -17,10 +17,15 @@ env:
   global:
     - PHPUNIT_VERSION="~7|~8"
     - COMPOSER_CACHE_DIR=/home/travis/.composer
+    - WOO_VERSION="3.6.*"
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
     - WP_VERSION=4.8.*
+    - WP_VERSION=4.8.* WOO_VERSION="3.4.*"
+    - WP_VERSION=4.8.* WOO_VERSION="3.2.*"
+    - WP_VERSION=4.8.* WOO_VERSION="3.0.*"
+    - WP_VERSION=4.8.* WOO_VERSION="3.0.*"
     - WP_VERSION=5.0.*
     - WP_VERSION=5.2.*
     - WP_VERSION=dev-master
@@ -54,13 +59,18 @@ cache:
 before_install:
   - mysql -e 'CREATE DATABASE dev;'
   # Try supporting other versions
-  - composer require --update-with-dependencies phpunit/phpunit:$PHPUNIT_VERSION johnpbloch/wordpress:$WP_VERSION
+  - |
+    composer require --update-with-dependencies
+    johnpbloch/wordpress:$WP_VERSION
+    phpunit/phpunit:$PHPUNIT_VERSION
+    wpackagist-plugin/woocommerce:$WOO_VERSION
 
 install:
   - composer install
   # Using WP-CLI instead of Composer because this way we can use the env matrix (above).
   - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1" --skip-check
   - vendor/bin/wp --allow-root core install --skip-email
+  - vendor/bin/wp --allow-root plugin activate --all
   - for L in etc/*; do ln -s $L; done
   - ln -s etc/.coveralls.yml
 
