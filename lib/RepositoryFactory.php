@@ -73,7 +73,7 @@ class RepositoryFactory
     }
 
     /**
-     * @param $object
+     * @param object $object
      * @return RepositoryInterface
      */
     public function forEntity($object)

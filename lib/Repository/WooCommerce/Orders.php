@@ -26,6 +26,7 @@ namespace RmpUp\WordPress\Fixtures\Repository\WooCommerce;
 
 use RmpUp\WordPress\Fixtures\Entity\WooCommerce\Order;
 use RmpUp\WordPress\Fixtures\Repository\RepositoryInterface;
+use WC_Product;
 
 /**
  * Orders
@@ -37,8 +38,10 @@ class Orders implements RepositoryInterface
 {
 
     /**
-     * @param \stdClass|Order $object Fixture data.
+     * @param Order  $object      Fixture data.
      * @param string $fixtureName Key as provided in fixture config
+     *
+     * @throws \WC_Data_Exception|\RuntimeException
      */
     public function persist($object, string $fixtureName)
     {
@@ -50,7 +53,15 @@ class Orders implements RepositoryInterface
         }
 
         foreach ($object->products as $product) {
-            $order->add_product(wc()->product_factory->get_product($product->ID));
+            $wcProduct = wc()->product_factory->get_product($product->ID);
+
+            if (false === $wcProduct instanceof WC_Product) {
+                throw new \RuntimeException(
+                    sprintf('Could not add product "%s to order "#%s"', $product->ID, $order->get_id())
+                );
+            }
+
+            $order->add_product($wcProduct);
         }
 
         $order->save();
@@ -60,7 +71,8 @@ class Orders implements RepositoryInterface
 
     /**
      * @param \stdClass $object Fixture to lookup.
-     * @param string $fixtureName
+     * @param string    $fixtureName
+     *
      * @return int|null ID or null when not found
      */
     public function find($object, string $fixtureName)
@@ -70,7 +82,7 @@ class Orders implements RepositoryInterface
 
     /**
      * @param \stdClass $object
-     * @param string $fixtureName
+     * @param string    $fixtureName
      */
     public function delete($object, string $fixtureName)
     {
@@ -86,7 +98,7 @@ class Orders implements RepositoryInterface
             // TODO 'parent' => null,
             // TODO 'created_via' => null,
             // TODO 'cart_hash' => null,
-            'order_id' => (int)$order->id,
+            'order_id' => (int) $order->id,
         ];
     }
 }

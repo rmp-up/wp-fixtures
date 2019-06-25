@@ -8,12 +8,12 @@
 /var
 /vendor
 
-.coveralls.yml
+/.coveralls.yml
 .docker
 .env
 composer.lock
-phpcs.xml.dist
-phpstan.neon.dist
+/phpcs.xml.dist
+/phpstan.neon.dist
 
 
 ## Boilerplates

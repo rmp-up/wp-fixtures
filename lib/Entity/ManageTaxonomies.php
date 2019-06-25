@@ -41,7 +41,7 @@ trait ManageTaxonomies
         foreach ($this->tax_input as $taxonomy => $terms) {
             if (!is_array($terms)) {
                 throw new \DomainException(
-                    sprintf('Syntax error in tax_input for term/taxonomy "%s" in %s', (string)$terms, $fixtureName)
+                    sprintf('Syntax error in tax_input for term/taxonomy "%s" in %s', (string) $terms, $fixtureName)
                 );
             }
 
@@ -60,8 +60,9 @@ trait ManageTaxonomies
     }
 
     /**
-     * @param $taxonomy
-     * @param $slug
+     * @param string $taxonomy
+     * @param string $slug
+     * @param string $name
      *
      * @return \WP_Term
      */
@@ -81,6 +82,12 @@ trait ManageTaxonomies
             );
         }
 
-        return get_term($termData['term_id']);
+        $wpTerm = get_term($termData['term_id']);
+
+        if (false === $wpTerm instanceof \WP_Term) {
+            throw new \RuntimeException('Could not assert term ' . $name);
+        }
+
+        return $wpTerm;
     }
 }

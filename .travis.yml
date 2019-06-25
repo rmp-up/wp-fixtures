@@ -60,9 +60,9 @@ before_install:
   - mysql -e 'CREATE DATABASE dev;'
   # Try supporting other versions
   - |
-    composer require --update-with-dependencies
-    johnpbloch/wordpress:$WP_VERSION
-    phpunit/phpunit:$PHPUNIT_VERSION
+    composer require --update-with-dependencies \
+    johnpbloch/wordpress:$WP_VERSION \
+    phpunit/phpunit:$PHPUNIT_VERSION \
     wpackagist-plugin/woocommerce:$WOO_VERSION
 
 install:

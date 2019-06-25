@@ -51,7 +51,7 @@ class Post extends \stdClass implements Sanitizable
      * A numeric string, for compatibility reasons.
      *
      * @since 3.5.0
-     * @var string
+     * @var int|User
      */
     public $post_author = 0;
 

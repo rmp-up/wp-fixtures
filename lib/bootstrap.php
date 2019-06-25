@@ -1,10 +1,8 @@
 <?php
 
-\Pretzlaw\WPInt\run_wp();
-
-add_filter('user_has_cap', 'rmp_wp_fixture_all_caps', 10, 2);
-
 const WP_CLI = true;
+
+\Pretzlaw\WPInt\run_wp();
 
 function rmp_wp_fixture_all_caps($allcaps, $caps)
 {
@@ -15,3 +13,6 @@ function rmp_wp_fixture_all_caps($allcaps, $caps)
 
     return $allcaps;
 }
+
+add_filter('user_has_cap', 'rmp_wp_fixture_all_caps', 10, 2);
+

@@ -24,8 +24,6 @@ declare(strict_types=1);
 
 namespace RmpUp\WordPress\Fixtures\Entity;
 
-use RmpUp\WordPress\Fixtures\Repository\RepositoryInterface;
-
 /**
  * Sanitizable
  *
@@ -36,7 +34,7 @@ interface Sanitizable
 {
     /**
      * @param string $fixtureName Name as given in the fixture configuration.
-     * @return \stdClass a clone of the sanitized object
+     * @return object a clone of the sanitized object
      */
     public function sanitize(string $fixtureName);
 }

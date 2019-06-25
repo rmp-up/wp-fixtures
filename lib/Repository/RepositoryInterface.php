@@ -33,13 +33,13 @@ namespace RmpUp\WordPress\Fixtures\Repository;
 interface RepositoryInterface
 {
     /**
-     * @param \stdClass $object Fixture data.
+     * @param object $object Fixture data.
      * @param string $fixtureName Key as provided in fixture config
      */
     public function persist($object, string $fixtureName);
 
     /**
-     * @param \stdClass $object Fixture to lookup.
+     * @param object $object Fixture to lookup.
      * @param string $fixtureName
      * @return int|null ID or null when not found
      */

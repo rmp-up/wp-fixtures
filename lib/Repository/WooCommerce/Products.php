@@ -86,7 +86,7 @@ class Products extends Posts
      */
     public function find($object, string $fixtureName = null)
     {
-        $found = wc_get_product_id_by_sku($fixtureName);
+        $found = wc_get_product_id_by_sku((string) $fixtureName);
 
         if (0 !== $found) {
             return $found;
