@@ -1,13 +1,19 @@
 # Project
 
-.docker/
+/.docker
+/.idea
+/documentation.css
+/srv
+/tmp
+/var
+/vendor
+
+.coveralls.yml
+.docker
 .env
-.idea/
-srv/
-tmp/
-var/
-vendor/
 composer.lock
+phpcs.xml.dist
+phpstan.neon.dist
 
 
 ## Boilerplates
