@@ -5,4 +5,4 @@ if (!defined('WP_CLI')) {
     return;
 }
 
-\WP_CLI::add_command('fixture', \Pretzlaw\WordPress\Fixtures\Cli\FixtureCommand::class);
+\WP_CLI::add_command('fixture', \RmpUp\WordPress\Fixtures\Cli\FixtureCommand::class);

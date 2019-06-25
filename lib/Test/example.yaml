@@ -1,0 +1,3 @@
+\RmpUp\WordPress\Fixtures\Entity\Post:
+  post_0:
+    post_title: This should collide intentionally!

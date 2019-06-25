@@ -8,7 +8,7 @@
 >
     <testsuites>
         <testsuite name="default">
-            <directory>lib/Pretzlaw/WordPress/Fixtures/Test</directory>
+            <directory>lib/Test</directory>
         </testsuite>
     </testsuites>
 
@@ -31,7 +31,7 @@
         <listener class="Pretzlaw\PHPUnit\DocGen\TestCaseListener">
             <arguments>
                 <string>var/documentation.html</string>
-                <string>rmp-up/wp-di - Dependency injection magic for WordPress</string>
+                <string>rmp-up/wp-fixtures - Expressive fixtures persistence in WordPress (and some plugins)</string>
                 <string>etc/documentation.css</string>
             </arguments>
         </listener>
