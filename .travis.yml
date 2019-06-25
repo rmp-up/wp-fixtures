@@ -18,6 +18,7 @@ env:
     - PHPUNIT_VERSION="~7|~8"
     - COMPOSER_CACHE_DIR=/home/travis/.composer
     - WOO_VERSION="3.6.*"
+    - WP_VERSION="*"
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
@@ -34,13 +35,14 @@ matrix:
   include:
     # additional combination among env (as above)
     - php: '5.6'
-      env: PHPUNIT_VERSION=~5 WP_VERSION=4.9
+      env: PHPUNIT_VERSION=~5 WP_VERSION=4.9.*
     - php: '7.0'
     # Intermediate version tests due to unstable SemVer
     - php: '7.1'
-      env: PHPUNIT_VERSION="~7" WP_VERSION=4.9
+      env: PHPUNIT_VERSION="~7" WP_VERSION=4.9.*
   # in the process to achieve support
   allow_failures:
+    - php: '5.6'
     - php: '7.0'
     - php: '7.2'
     - php: '7.3'
@@ -60,7 +62,7 @@ before_install:
   - mysql -e 'CREATE DATABASE dev;'
   # Try supporting other versions
   - |
-    composer require --update-with-dependencies \
+    composer require --update-with-dependencies --ignore-platform-reqs \
     johnpbloch/wordpress:$WP_VERSION \
     phpunit/phpunit:$PHPUNIT_VERSION \
     wpackagist-plugin/woocommerce:$WOO_VERSION
