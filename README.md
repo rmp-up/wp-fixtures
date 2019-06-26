@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/rmp-up/wp-fixtures.svg?branch=master)](https://travis-ci.org/rmp-up/wp-fixtures)
+[![Coverage Status](https://coveralls.io/repos/github/rmp-up/wp-fixtures/badge.svg)](https://coveralls.io/github/rmp-up/wp-fixtures)
+
 # WordPress Fixture Generator
 
 > Expressive fixtures persistence in WordPress (and some plugins).
@@ -21,12 +24,12 @@ reinventing the wheel.
 
 Download or just
 
-    composer install --dev pretzlaw/wp-fixtures
+    composer install --dev rmp-up/wp-fixtures
 
 We mostly require what Alice also needs
-([see Packagist.org for more details](https://packagist.org/packages/pretzlaw/wp-fixtures)):
+([see Packagist.org for more details](https://packagist.org/packages/rmp-up/wp-fixtures)):
 
-* PHP 7.1
+* PHP 7.1 - 7.3
 * WordPress 5.0
 
 Optional:
@@ -43,7 +46,7 @@ a post using faker
 and plenty of comments within one yaml:
 
 ```yaml
-\Pretzlaw\WordPress\Fixtures\Entity\Page:
+\RmpUp\WordPress\Fixtures\Entity\Page:
   page_1:
     # Well known wp_insert_post() structure
     post_title: Imprint
@@ -65,7 +68,7 @@ and plenty of comments within one yaml:
         best: Ellen
 
 
-\Pretzlaw\WordPress\Fixtures\Entity\Post:
+\RmpUp\WordPress\Fixtures\Entity\Post:
   post_{1..10}:
     post_title: '<sentence()>'
     post_content: '<realText()>'
@@ -74,7 +77,7 @@ and plenty of comments within one yaml:
   # see https://github.com/fzaninotto/Faker#formatters
 
 
-\Pretzlaw\WordPress\Fixtures\Entity\Comment:
+\RmpUp\WordPress\Fixtures\Entity\Comment:
   comment_1:
     # Reference one of the above
     comment_post_ID: '@post_1'
@@ -96,16 +99,6 @@ And many more:
   * Bundles
   * Orders
 
-
-## Support and Migration
-
-This is simply a list of releases and their EOL:
-
-:grey_question:    | Version   | Features until  | Hotfixes until
------------------- | --------- | --------------- | --------------
-:heavy_check_mark: | <= 0.1    | 2019-02-28      | (tba)
-
-  
 ## License
 
 Copyright 2019 Mike Pretzlaw (mike-pretzlaw.de)
