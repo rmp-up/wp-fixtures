@@ -29,7 +29,7 @@
     "wp-cli/db-command": "2.0.*",
     "wp-cli/extension-command": "2.0.*",
     "wp-cli/wp-cli": "2.2.*",
-    "wpackagist-plugin/woocommerce":"3.6.*",
+    "wpackagist-plugin/woocommerce":"3.7.*",
     "wpackagist-plugin/yith-woocommerce-product-bundles":"1.1.*"
   },
   "config": {
