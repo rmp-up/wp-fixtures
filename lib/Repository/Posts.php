@@ -40,8 +40,9 @@ class Posts extends AbstractRepository
 
 
     /**
-     * @param Post $object
+     * @param Post        $object
      * @param string|null $fixtureName
+     *
      * @return int|null
      */
     public function find($object, string $fixtureName = null)
@@ -54,7 +55,7 @@ class Posts extends AbstractRepository
         $found = null;
 
         // By title
-        if (!$found && !empty($object->post_title)) {
+        if (!empty($object->post_title)) {
             $found = get_page_by_title($object->post_title, OBJECT, $object->post_type ?: 'page');
         }
 
@@ -79,8 +80,9 @@ class Posts extends AbstractRepository
     }
 
     /**
-     * @param $double
-     * @return int|\WP_Error
+     * @param object $double
+     *
+     * @return int
      */
     protected function create($double): int
     {
@@ -93,6 +95,10 @@ class Posts extends AbstractRepository
         return $postId;
     }
 
+    /**
+     * @param Post   $object
+     * @param string $fixtureName
+     */
     public function delete($object, string $fixtureName)
     {
         $id = $this->find($object, $fixtureName);

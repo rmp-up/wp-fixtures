@@ -28,10 +28,9 @@ Then build up WordPress:
 
 ```bash
 composer install
-vendor/bin/wp --allow-root core download
 vendor/bin/wp --allow-root config create
 vendor/bin/wp --allow-root core install --skip-email
-vendor/bin/wp --allow-root core update --minor
+vendor/bin/wp --allow-root plugins activate --all
 ```
 
 ## Testing

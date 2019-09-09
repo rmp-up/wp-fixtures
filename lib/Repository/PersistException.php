@@ -34,7 +34,7 @@ class PersistException extends \RuntimeException
 {
     /**
      * PersistException constructor.
-     * @param $target
+     * @param object $target
      * @param \Exception|\WP_Error|string $error
      */
     public function __construct($target, $error = null)

@@ -1,0 +1,15 @@
+parameters:
+    level: 7
+    autoload_directories:
+        - ./lib
+    autoload_files:
+        - ./vendor/autoload.php
+        - ./lib/Test/bootstrap.php
+    excludes_analyse:
+        - ./lib/Test
+        - ./lib/wp-cli.php
+        - ./lib/bootstrap.php
+        - ./lib/Repository/WooCommerce/ProductBundles/Bundles.php
+    ignoreErrors:
+        - '#Access to an undefined property object::\$ID.#'
+        - '# on an unknown class WP_CLI.#'

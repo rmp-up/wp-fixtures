@@ -52,12 +52,15 @@ class User extends \stdClass implements Validatable, Sanitizable
 
     /**
      * @param string $fixtureName
-     * @return void a clone of the sanitized object
+     *
+     * @return User
      */
     public function sanitize(string $fixtureName)
     {
         $this->applyAbbreviations([static::PREFIX]);
         $this->seed($fixtureName);
+
+        return clone $this;
     }
 
     /**

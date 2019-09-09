@@ -61,6 +61,7 @@ class Bundles extends Products
     private function setProducts($bundleId, array $products)
     {
         $bundle = wc_get_product($bundleId);
+
         $bundle->set_bundled_data_items($products);
         $bundle->save();
     }

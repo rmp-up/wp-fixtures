@@ -24,10 +24,13 @@ declare(strict_types=1);
 
 namespace RmpUp\WordPress\Fixtures\Cli;
 
+use Exception;
 use Nelmio\Alice\Loader\NativeLoader;
 use RmpUp\WordPress\Fixtures\Repository\RepositoryInterface;
 use RmpUp\WordPress\Fixtures\RepositoryFacade;
 use RmpUp\WordPress\Fixtures\RepositoryFactory;
+use RuntimeException;
+use WP_CLI;
 
 /**
  * FixtureCommand
@@ -35,7 +38,7 @@ use RmpUp\WordPress\Fixtures\RepositoryFactory;
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-02-08
  */
-class FixtureCommand extends \WP_CLI
+class FixtureCommand
 {
     /**
      * @var RepositoryInterface
@@ -74,12 +77,16 @@ class FixtureCommand extends \WP_CLI
             $compiled = [];
             foreach ($arguments as $path) {
                 $fixtureFiles = $this->fetchFiles($path);
-                \WP_CLI::debug(sprintf('Found %d configurations in "%s"', count($fixtureFiles), $path));
+                WP_CLI::debug(sprintf('Found %d configurations in "%s"', count($fixtureFiles), $path));
 
                 foreach ($fixtureFiles as $fixtureFile) {
                     $fixtures = $this->loader->loadFile($fixtureFile, [], $compiled);
-                    \WP_CLI::debug(
-                        sprintf('Found %d new objects in %s', count($fixtures) - count($compiled), $fixtureFile)
+                    WP_CLI::debug(
+                        sprintf(
+                            'Found %d new objects in %s',
+                            count($fixtures->getObjects()) - count($compiled),
+                            $fixtureFile
+                        )
                     );
 
                     foreach ($fixtures->getObjects() as $key => $object) {
@@ -93,7 +100,7 @@ class FixtureCommand extends \WP_CLI
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $message = $e->getMessage();
 
             if ($key) {
@@ -101,7 +108,7 @@ class FixtureCommand extends \WP_CLI
                 $message = $key . ': ' . $message;
             }
 
-            \WP_CLI::error($message);
+            WP_CLI::error($message);
         }
     }
 
@@ -124,22 +131,22 @@ class FixtureCommand extends \WP_CLI
                 return [];
             }
 
-            \WP_CLI::debug(sprintf('Found %s', $path));
+            WP_CLI::debug(sprintf('Found %s', $path));
             return [$path];
         }
 
-        \WP_CLI::debug(sprintf('Searching in %s', $path));
+        WP_CLI::debug(sprintf('Searching in %s', $path));
 
         $files = [];
 
         if (is_dir($path)) {
             // Files first
-            foreach (glob($path . '/' . $prefix . '*' . $suffix) as $singleFile) {
+            foreach ((array) glob($path . '/' . $prefix . '*' . $suffix, GLOB_NOSORT) as $singleFile) {
                 $files[] = [$singleFile];
             }
 
             // Recurse in directories
-            foreach (glob($path . '/*', GLOB_ONLYDIR) as $subDir) {
+            foreach ((array) glob($path . '/*', GLOB_ONLYDIR) as $subDir) {
                 $files[] = $this->fetchFiles($subDir, $prefix, $suffix);
             }
         }
@@ -163,7 +170,7 @@ class FixtureCommand extends \WP_CLI
             $exists = $this->repo->find($object, $fixtureName);
 
             if (null !== $exists) {
-                throw new \RuntimeException(
+                throw new RuntimeException(
                     sprintf('Entity already present in the database (ID %d).', $exists)
                 );
             }

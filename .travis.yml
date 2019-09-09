@@ -17,10 +17,16 @@ env:
   global:
     - PHPUNIT_VERSION="~7|~8"
     - COMPOSER_CACHE_DIR=/home/travis/.composer
+    - WOO_VERSION="3.6.*"
+    - WP_VERSION="*"
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
     - WP_VERSION=4.8.*
+    - WP_VERSION=4.8.* WOO_VERSION="3.4.*"
+    - WP_VERSION=4.8.* WOO_VERSION="3.2.*"
+    - WP_VERSION=4.8.* WOO_VERSION="3.0.*"
+    - WP_VERSION=4.8.* WOO_VERSION="3.0.*"
     - WP_VERSION=5.0.*
     - WP_VERSION=5.2.*
     - WP_VERSION=dev-master
@@ -29,16 +35,15 @@ matrix:
   include:
     # additional combination among env (as above)
     - php: '5.6'
-      env: PHPUNIT_VERSION=~5 WP_VERSION=4.9
+      env: PHPUNIT_VERSION=~5 WP_VERSION=4.9.*
     - php: '7.0'
     # Intermediate version tests due to unstable SemVer
     - php: '7.1'
-      env: PHPUNIT_VERSION="~7" WP_VERSION=4.9
+      env: PHPUNIT_VERSION="~7" WP_VERSION=4.9.*
   # in the process to achieve support
   allow_failures:
+    - php: '5.6'
     - php: '7.0'
-    - php: '7.2'
-    - php: '7.3'
     - env: WP_VERSION=dev-master
     - env: PHPUNIT_VERSION="~7"
   # Do not wait for allowed failures
@@ -54,20 +59,23 @@ cache:
 before_install:
   - mysql -e 'CREATE DATABASE dev;'
   # Try supporting other versions
-  - composer require --update-with-dependencies phpunit/phpunit:$PHPUNIT_VERSION johnpbloch/wordpress:$WP_VERSION
+  - |
+    composer require --update-with-dependencies --ignore-platform-reqs \
+    johnpbloch/wordpress:$WP_VERSION \
+    phpunit/phpunit:$PHPUNIT_VERSION \
+    wpackagist-plugin/woocommerce:$WOO_VERSION
 
 install:
-  - composer install
-  # Using WP-CLI instead of Composer because this way we can use the env matrix (above).
   - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1" --skip-check
   - vendor/bin/wp --allow-root core install --skip-email
+  - vendor/bin/wp --allow-root plugin activate --all
   - for L in etc/*; do ln -s $L; done
   - ln -s etc/.coveralls.yml
 
 script:
   - composer validate --strict --no-check-lock
   - vendor/bin/phpunit --coverage-clover coverage.xml
-  - vendor/bin/phpstan analyse lib/
+  - vendor/bin/phpstan analyse --no-progress lib/
 
 after_script:
   # upload coverage.xml file to Coveralls to analyze it

@@ -2,7 +2,10 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * ${SHORT}
+ * compat.php
+ *
+ * Add missing functions
+ * and normalize differences per plugin, theme or WordPress version.
  *
  * LICENSE: This source file is created by the company around Mike Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -13,28 +16,22 @@
  * of the license and are unable to obtain it through the web, please send a
  * note to mail@mike-pretzlaw.de so we can mail you a copy.
  *
- * @package    wp-fixtures
- * @copyright  2018 Mike Pretzlaw
+ * @package    pretzlaw/wp-fixtures
+ * @copyright  2019 Mike Pretzlaw
  * @license    https://mike-pretzlaw.de/license-generic.txt
- * @link       https://project.mike-pretzlaw.de/wp-fixtures
- * @since      2019-02-02
+ * @link       https://project.mike-pretzlaw.de/pretzlaw/wp-fixtures
+ * @since      2019-06-25
  */
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Entity;
-
 /**
- * Sanitizable
- *
- * @copyright  2018 Mike Pretzlaw (https://mike-pretzlaw.de)
- * @since      2019-02-02
+ * WooCommerce <= 3.5
  */
-interface Sanitizable
-{
-    /**
-     * @param string $fixtureName Name as given in the fixture configuration.
-     * @return object a clone of the sanitized object
-     */
-    public function sanitize(string $fixtureName);
+if (1 === version_compare('3.6.0', wc()->version)) {
+    // Add missing function
+    function wc_update_product_lookup_tables()
+    {
+
+    }
 }

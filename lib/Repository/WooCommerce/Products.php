@@ -35,6 +35,14 @@ use RmpUp\WordPress\Fixtures\Repository\Posts;
  */
 class Products extends Posts
 {
+
+    public function persist($object, string $fixtureName)
+    {
+        parent::persist($object, $fixtureName);
+
+        $this->updateLookup();
+    }
+
     /**
      * @param Product $object
      */
@@ -50,7 +58,25 @@ class Products extends Posts
             throw new \RuntimeException('Product could not be loaded: ' . $object->ID);
         }
 
-        wp_update_post($object);
+        $update = wp_update_post($object);
+
+        if (!is_int($update)) {
+            throw new \RuntimeException('Product could not be updated: ' . $object->ID);
+        }
+
+        $this->updateLookup();
+    }
+
+    /**
+     * Update the WooCommerce lookup tables if given
+     *
+     * @since 0.7.0
+     */
+    private function updateLookup()
+    {
+        if (function_exists('wc_update_product_lookup_tables')) {
+            wc_update_product_lookup_tables();
+        }
     }
 
     /**
@@ -60,7 +86,7 @@ class Products extends Posts
      */
     public function find($object, string $fixtureName = null)
     {
-        $found = wc_get_product_id_by_sku($fixtureName);
+        $found = wc_get_product_id_by_sku((string) $fixtureName);
 
         if (0 !== $found) {
             return $found;

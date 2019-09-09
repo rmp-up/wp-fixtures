@@ -96,7 +96,7 @@ class Users extends AbstractRepository
     }
 
     /**
-     * @param \stdClass $object
+     * @param User $object
      * @param string $fixtureName
      */
     public function delete($object, string $fixtureName)

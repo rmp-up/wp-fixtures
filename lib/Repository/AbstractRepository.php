@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace RmpUp\WordPress\Fixtures\Repository;
 
+use RmpUp\WordPress\Fixtures\Entity\Post;
 use RmpUp\WordPress\Fixtures\Entity\Sanitizable;
 use RmpUp\WordPress\Fixtures\Entity\Validatable;
 
@@ -36,7 +37,8 @@ use RmpUp\WordPress\Fixtures\Entity\Validatable;
 abstract class AbstractRepository implements RepositoryInterface
 {
     /**
-     * @inheritdoc
+     * @param Post $object
+     * @param string $fixtureName
      */
     public function persist($object, string $fixtureName)
     {
@@ -51,13 +53,7 @@ abstract class AbstractRepository implements RepositoryInterface
             return;
         }
 
-        $id = $this->create($sanitized);
-
-        if ($id instanceof \WP_Error) {
-            throw new PersistException($object, $id);
-        }
-
-        $object->ID = $id;
+        $object->ID = $this->create($sanitized);
     }
 
     protected function toArray($source)
@@ -66,20 +62,20 @@ abstract class AbstractRepository implements RepositoryInterface
     }
 
     /**
-     * @param $object
+     * @param object $object
      * @param string|null $fixtureName
-     * @return Sanitizable|\stdClass
+     * @return Sanitizable|object
      */
     protected function parse($object, string $fixtureName = null)
     {
         $double = clone $object;
 
         if ($double instanceof Sanitizable) {
-            $double->sanitize($fixtureName);
+            $double->sanitize((string) $fixtureName);
         }
 
         if ($double instanceof Validatable) {
-            $double->validate($fixtureName);
+            $double->validate((string) $fixtureName);
         }
 
         return $double;
