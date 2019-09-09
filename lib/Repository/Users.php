@@ -53,22 +53,30 @@ class Users extends AbstractRepository
 
     protected function create($object): int
     {
-        $id = wp_insert_user($this->toArray($object));
+        $data = $this->toArray($object);
+
+        $id = wp_insert_user($data);
 
         if ($id instanceof \WP_Error) {
             throw new PersistException($object, $id);
         }
 
-        return (int)$id;
+        $this->updateMetaData('user', $id, $data['meta_input'] ?? []);
+
+        return (int) $id;
     }
 
     protected function update($object)
     {
-        $result = wp_update_user((object)$this->toArray($object));
+        $data = $this->toArray($object);
 
-        if ($result instanceof \WP_Error) {
-            throw new PersistException($object, $result);
+        $userId = wp_update_user((object) $data);
+
+        if ($userId instanceof \WP_Error || false === is_numeric($userId)) {
+            throw new PersistException($object, $userId);
         }
+
+        $this->updateMetaData('user', (int) $userId, $data['meta_input'] ?? []);
     }
 
     /**

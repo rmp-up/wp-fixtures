@@ -238,6 +238,31 @@ abstract class AbstractTestCase extends TestCase
         return '';
     }
 
+    protected function query(string $query, array $params = []): array
+    {
+        /** @var \wpdb $wpdb */
+        global $wpdb;
+
+        if ($params) {
+            $query = $wpdb->prepare($query, $params);
+        }
+
+        return (array) $wpdb->get_results($query, ARRAY_A);
+    }
+
+    /**
+     * WordPress Database connection
+     *
+     * @return \wpdb
+     */
+    protected function wpdb(): \wpdb
+    {
+        /** @var \wpdb $wpdb */
+        global $wpdb;
+
+        return $wpdb;
+    }
+
     private $factory;
 
     public function factory()

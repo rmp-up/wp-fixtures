@@ -81,6 +81,51 @@ abstract class AbstractRepository implements RepositoryInterface
         return $double;
     }
 
+    /**
+     * Set meta-data for given entity
+     *
+     * Stores data for an entity in the database with special cases:
+     *
+     * * Array values will consecutively use `add_metadata`
+     *   so that each entry represents one row in the database.
+     *
+     * @param string $type     Type of the entity (e.g. "post").
+     * @param int    $entityId ID of the post, user or other entity.
+     * @param array  $metaData Key-Value-Store of meta data.
+     */
+    protected function updateMetaData(string $type, int $entityId, array $metaData)
+    {
+        foreach ($metaData as $metaKey => $metaValue) {
+            // We always replace the current meta-data because we are a fixture.
+            delete_metadata($type, $entityId, $metaKey);
+
+            if (is_array($metaValue)
+                && count(array_filter(array_keys($metaValue), 'is_string')) <= 0
+            ) {
+                // Got sequential / non-assoc array which we will split and replace.
+                foreach ($metaValue as $rowNum => $item) {
+                    $success = add_metadata($type, $entityId, $metaKey, $item);
+
+                    if (false === $success) {
+                        throw new \RuntimeException(
+                            sprintf(
+                                'Could not set meta-data "%s" (%d. row) for %s "%d"',
+                                $metaKey,
+                                $rowNum,
+                                $type,
+                                $entityId
+                            )
+                        );
+                    }
+                }
+
+                continue;
+            }
+
+            update_metadata($type, $entityId, $metaKey, $metaValue);
+        }
+    }
+
     abstract protected function create($object): int;
 
     abstract protected function update($object);
