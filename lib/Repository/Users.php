@@ -72,7 +72,7 @@ class Users extends AbstractRepository
 
         $userId = wp_update_user((object) $data);
 
-        if ($userId instanceof \WP_Error || false === is_numeric($userId)) {
+        if (false === is_numeric($userId)) {
             throw new PersistException($object, $userId);
         }
 
