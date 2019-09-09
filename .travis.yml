@@ -67,6 +67,8 @@ before_install:
     johnpbloch/wordpress:$WP_VERSION \
     phpunit/phpunit:$PHPUNIT_VERSION \
     wpackagist-plugin/woocommerce:$WOO_VERSION
+  # Rerun install because downloading WordPress will overwrite plugins
+  - composer install
 
 install:
   - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1" --skip-check
