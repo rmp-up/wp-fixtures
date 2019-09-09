@@ -26,12 +26,19 @@
 declare(strict_types=1);
 
 /**
- * WooCommerce <= 3.5
+ * WooCommerce
  */
-if (1 === version_compare('3.6.0', wc()->version)) {
-    // Add missing function
-    function wc_update_product_lookup_tables()
-    {
+if (function_exists('wc') && 'WooCommerce' === get_class(wc())) {
+    /**
+     * WooCommerce <= 3.5
+     */
+    if (1 === version_compare('3.6.0', wc()->version)) {
+        /**
+         * Add missing function
+         */
+        function wc_update_product_lookup_tables()
+        {
 
+        }
     }
 }
