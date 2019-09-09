@@ -20,6 +20,14 @@ Overall the goal is **simplicity** and **no time wasting crap** (for me and you)
 which we achieve by using raw WordPress structures in the YAML instead of
 reinventing the wheel.
 
+By now we bring helper for:
+
+* **WordPress** 4.5 - 5.2, e.g. posts, pages, user, options etc.
+* **WooCommerce** 3.0 - 3.7, e.g. orders, products etc.
+
+See below how a small Yaml-File can seed the database with tons of entries.
+
+
 ## Install
 
 Download or just
@@ -29,8 +37,8 @@ Download or just
 We mostly require what Alice also needs
 ([see Packagist.org for more details](https://packagist.org/packages/rmp-up/wp-fixtures)):
 
-* PHP 7.1 - 7.3
-* WordPress 5.0
+* PHP
+* WordPress
 
 Optional:
 
