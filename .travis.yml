@@ -60,7 +60,6 @@ cache:
     - $HOME/.composer
 
 before_install:
-  - phpenv config-rm xdebug.ini
   - mysql -e 'CREATE DATABASE dev;'
   # Try supporting other versions
   - |
