@@ -68,7 +68,7 @@ before_install:
     phpunit/phpunit:$PHPUNIT_VERSION \
     wpackagist-plugin/woocommerce:$WOO_VERSION
   # Rerun install because downloading WordPress will overwrite plugins
-  - composer install
+  - composer install --ignore-platform-reqs
 
 install:
   - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1" --skip-check
@@ -81,6 +81,8 @@ script:
   - composer validate --strict --no-check-lock
   - vendor/bin/phpunit --coverage-clover coverage.xml
   - vendor/bin/phpstan analyse --no-progress lib/
+  # Check if platform requirements would be a problem for others
+  - composer install --no-dev
 
 after_script:
   # upload coverage.xml file to Coveralls to analyze it
