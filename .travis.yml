@@ -19,6 +19,8 @@ env:
     - COMPOSER_CACHE_DIR=/home/travis/.composer
     - WOO_VERSION="3.7.*"
     - WP_VERSION="*"
+    # All jobs shall share the composer cache
+    - CACHE_NAME=$TRAVIS_BRANCH
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
@@ -55,7 +57,7 @@ services:
 
 cache:
   directories:
-    - /home/travis/.composer
+    - $HOME/.composer
 
 before_install:
   - mysql -e 'CREATE DATABASE dev;'
