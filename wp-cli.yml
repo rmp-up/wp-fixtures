@@ -4,7 +4,7 @@ apache_modules:
   - mod_rewrite
 
 core install:
-  url: http://10.213.37.70
+  url: http://10.211.3.71
   title: "New website"
   admin_user: "admin"
   admin_password: "letmein"
@@ -17,7 +17,7 @@ core config:
   dbname: dev
   dbprefix: wp_
   dbcharset: utf8
-  locale: de_DE
+  locale: en_GB
   extra-php: |
     // for development only
     define( 'AUTOMATIC_UPDATER_DISABLED', true ); // no automatic updates

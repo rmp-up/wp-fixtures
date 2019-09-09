@@ -9,14 +9,14 @@ services:
     env_file: [.env]
     networks:
       default:
-        ipv4_address: 10.211.03.71
+        ipv4_address: 10.211.3.71
 
   php73:
     <<: *php
     image: php:7.3-apache
     networks:
       default:
-        ipv4_address: 10.211.03.73
+        ipv4_address: 10.211.3.73
 
   db:
     image: mysql:5.7
@@ -29,10 +29,10 @@ services:
       MYSQL_ROOT_PASSWORD: dev
     networks:
       default:
-        ipv4_address: 10.211.03.157
+        ipv4_address: 10.211.3.157
 
 networks:
   default:
     ipam:
       config:
-        - subnet: 10.211.03.0/24
+        - subnet: 10.211.3.0/24

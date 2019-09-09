@@ -1,24 +1,41 @@
-<phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.5/phpunit.xsd"
-        colors="true"
-        convertNoticesToExceptions="false"
-        convertDeprecationsToExceptions="false"
-        bootstrap="lib/Pretzlaw/WordPress/Fixtures/bootstrap.php"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/7.0/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         convertNoticesToExceptions="false"
+         convertDeprecationsToExceptions="false"
+         bootstrap="lib/Test/bootstrap.php"
 >
-    <testsuite name="default">
-        <directory>lib/Pretzlaw/WordPress/Fixtures/Test</directory>
-    </testsuite>
+    <testsuites>
+        <testsuite name="default">
+            <directory>lib/Test</directory>
+        </testsuite>
+    </testsuites>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">lib/Pretzlaw/WordPress/Fixtures</directory>
+            <directory>lib/</directory>
             <exclude>
-                <file>lib/Pretzlaw/WordPress/Fixtures/Cli/FixtureCommand.php</file>
-                <directory>lib/Pretzlaw/WordPress/Fixtures/Test</directory>
+                <file>lib/Cli/FixtureCommand.php</file>
+                <directory>lib/Test</directory>
             </exclude>
         </whitelist>
     </filter>
+
+    <listeners>
+        <listener class="Pretzlaw\PHPUnit\DocGen\TestCaseListener">
+            <arguments>
+                <string>var/documentation.md</string>
+            </arguments>
+        </listener>
+        <listener class="Pretzlaw\PHPUnit\DocGen\TestCaseListener">
+            <arguments>
+                <string>var/documentation.html</string>
+                <string>rmp-up/wp-fixtures - Expressive fixtures persistence in WordPress (and some plugins)</string>
+                <string>etc/documentation.css</string>
+            </arguments>
+        </listener>
+    </listeners>
 
     <logging>
         <log type="coverage-html" target="var/phpunit" lowUpperBound="50" highLowerBound="80"/>
