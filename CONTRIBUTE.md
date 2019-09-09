@@ -30,7 +30,7 @@ Then build up WordPress:
 composer install
 vendor/bin/wp --allow-root config create
 vendor/bin/wp --allow-root core install --skip-email
-vendor/bin/wp --allow-root plugins activate --all
+vendor/bin/wp --allow-root plugin activate --all
 ```
 
 ## Testing
