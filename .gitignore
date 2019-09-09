@@ -3,7 +3,8 @@
 /.docker
 /.idea
 /documentation.css
-/srv
+/srv/*
+!/srv/.gitkeep
 /tmp
 /var
 /vendor
