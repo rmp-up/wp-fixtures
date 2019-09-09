@@ -86,6 +86,7 @@ script:
 
 after_script:
   # upload coverage.xml file to Coveralls to analyze it
+  - composer require php-coveralls/php-coveralls # reinstall dev
   - vendor/bin/coveralls --verbose
 
 after_failure:
