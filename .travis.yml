@@ -17,18 +17,21 @@ env:
   global:
     - PHPUNIT_VERSION="~7|~8"
     - COMPOSER_CACHE_DIR=/home/travis/.composer
-    - WOO_VERSION="3.6.*"
+    - WOO_VERSION="3.7.*"
     - WP_VERSION="*"
+    # All jobs shall share the composer cache
+    - CACHE_NAME=$TRAVIS_BRANCH
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
-    - WP_VERSION=4.8.*
-    - WP_VERSION=4.8.* WOO_VERSION="3.4.*"
-    - WP_VERSION=4.8.* WOO_VERSION="3.2.*"
-    - WP_VERSION=4.8.* WOO_VERSION="3.0.*"
-    - WP_VERSION=4.8.* WOO_VERSION="3.0.*"
-    - WP_VERSION=5.0.*
     - WP_VERSION=5.2.*
+    - WP_VERSION=5.1.* WOO_VERSION="3.6.*"
+    - WP_VERSION=5.0.* WOO_VERSION="3.5.*"
+    - WP_VERSION=4.9.* WOO_VERSION="3.4.*"
+    - WP_VERSION=4.8.* WOO_VERSION="3.3.*"
+    - WP_VERSION=4.7.* WOO_VERSION="3.2.*"
+    - WP_VERSION=4.6.* WOO_VERSION="3.1.*"
+    - WP_VERSION=4.5.* WOO_VERSION="3.0.*"
     - WP_VERSION=dev-master
 
 matrix:
@@ -54,7 +57,7 @@ services:
 
 cache:
   directories:
-    - /home/travis/.composer
+    - $HOME/.composer
 
 before_install:
   - mysql -e 'CREATE DATABASE dev;'
@@ -64,6 +67,8 @@ before_install:
     johnpbloch/wordpress:$WP_VERSION \
     phpunit/phpunit:$PHPUNIT_VERSION \
     wpackagist-plugin/woocommerce:$WOO_VERSION
+  # Rerun install because downloading WordPress will overwrite plugins
+  - composer install --ignore-platform-reqs
 
 install:
   - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1" --skip-check
@@ -76,9 +81,12 @@ script:
   - composer validate --strict --no-check-lock
   - vendor/bin/phpunit --coverage-clover coverage.xml
   - vendor/bin/phpstan analyse --no-progress lib/
+  # Check if platform requirements would be a problem for others
+  - composer install --no-dev
 
 after_script:
   # upload coverage.xml file to Coveralls to analyze it
+  - composer require php-coveralls/php-coveralls # reinstall dev
   - vendor/bin/coveralls --verbose
 
 after_failure:
