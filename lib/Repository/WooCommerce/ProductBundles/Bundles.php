@@ -52,10 +52,11 @@ class Bundles extends Products
      */
     protected function create($double): int
     {
-        $bundleId = parent::create($double);
+	    $double->ID = parent::create($double);
+
         $this->setProducts($double->ID, $double->products);
 
-        return $bundleId;
+        return $double->ID;
     }
 
     private function setProducts($bundleId, array $products)
