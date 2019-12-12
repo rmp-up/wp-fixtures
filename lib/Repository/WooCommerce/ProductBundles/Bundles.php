@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace RmpUp\WordPress\Fixtures\Repository\WooCommerce\ProductBundles;
 
 use RmpUp\WordPress\Fixtures\Entity\Sanitizable;
+use RmpUp\WordPress\Fixtures\Entity\WooCommerce\Product;
 use RmpUp\WordPress\Fixtures\Entity\WooCommerce\ProductBundles\Bundle;
 use RmpUp\WordPress\Fixtures\Repository\RepositoryInterface;
 use RmpUp\WordPress\Fixtures\Repository\WooCommerce\Products;
@@ -52,18 +53,31 @@ class Bundles extends Products
      */
     protected function create($double): int
     {
-	    $double->ID = parent::create($double);
+        $double->ID = parent::create($double);
 
         $this->setProducts($double->ID, $double->products);
 
         return $double->ID;
     }
 
+    /**
+     * Add products to bundle
+     *
+     * @param int       $bundleId
+     * @param Product[] $products
+     */
     private function setProducts($bundleId, array $products)
     {
         $bundle = wc_get_product($bundleId);
 
-        $bundle->set_bundled_data_items($products);
+        $bundleProducts = [];
+        foreach ($products as $product) {
+            $bundleProducts[] = [
+                'product_id' => $product->ID
+            ];
+        }
+
+        $bundle->set_bundled_data_items($bundleProducts);
         $bundle->save();
     }
 }
