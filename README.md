@@ -23,7 +23,7 @@ reinventing the wheel.
 By now we bring helper for:
 
 * **WordPress** 4.5 - 5.2, e.g. posts, pages, user, options etc.
-* **WooCommerce** 3.0 - 3.7, e.g. orders, products etc.
+* **WooCommerce** 3.0 - 3.8, e.g. orders, products etc.
 
 See below how a small Yaml-File can seed the database with tons of entries
 or [read the documentation](https://github.com/rmp-up/wp-fixtures/releases)

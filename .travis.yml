@@ -17,14 +17,15 @@ env:
   global:
     - PHPUNIT_VERSION="~7|~8"
     - COMPOSER_CACHE_DIR=/home/travis/.composer
-    - WOO_VERSION="3.7.*"
+    - WOO_VERSION="3.8.*"
     - WP_VERSION="*"
     # All jobs shall share the composer cache
     - CACHE_NAME=$TRAVIS_BRANCH
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
-    - WP_VERSION=5.2.*
+    - WP_VERSION=5.3.*
+    - WP_VERSION=5.2.* WOO_VERSION="3.7.*"
     - WP_VERSION=5.1.* WOO_VERSION="3.6.*"
     - WP_VERSION=5.0.* WOO_VERSION="3.5.*"
     - WP_VERSION=4.9.* WOO_VERSION="3.4.*"
