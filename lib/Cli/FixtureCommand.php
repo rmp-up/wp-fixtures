@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace RmpUp\WordPress\Fixtures\Cli;
 
 use Exception;
+use Nelmio\Alice\FileLoaderInterface;
 use Nelmio\Alice\Loader\NativeLoader;
 use RmpUp\WordPress\Fixtures\Repository\RepositoryInterface;
 use RmpUp\WordPress\Fixtures\RepositoryFacade;
@@ -33,7 +34,7 @@ use RuntimeException;
 use WP_CLI;
 
 /**
- * FixtureCommand
+ * Fixture command for wp-cli .
  *
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-02-08
@@ -41,14 +42,40 @@ use WP_CLI;
 class FixtureCommand
 {
     /**
+     * Force overwriting existing data (in case of collisions)
+     *
+     * @var bool
+     */
+    private $force = false;
+
+    /**
+     * @var FileLoaderInterface
+     */
+    private $loader;
+
+    /**
      * @var RepositoryInterface
      */
     private $repo;
 
-    public function __construct()
+    /**
+     * Creating a new FixtureCommand
+     *
+     * @param FileLoaderInterface|null $loader Usually the \Nelmio\Alice\Loader\NativeLoader .
+     * @param RepositoryInterface|null $repo   Taking care of read and write (in WordPress).
+     */
+    public function __construct(FileLoaderInterface $loader = null, RepositoryInterface $repo = null)
     {
-        $this->loader = new NativeLoader();
-        $this->repo = new RepositoryFacade(new RepositoryFactory());
+        if (null === $loader) {
+            $loader = new NativeLoader();
+        }
+
+        if (null === $repo) {
+            $repo = new RepositoryFacade(new RepositoryFactory());
+        }
+
+        $this->loader = $loader;
+        $this->repo = $repo;
     }
 
     /**
@@ -61,21 +88,16 @@ class FixtureCommand
      * : One or more files/directories to look for *.yaml files.
      *
      */
-    public function __invoke($arguments, $options)
+    public function __invoke($yamlFiles, $options)
     {
-        $options = array_merge(
-            [
-                'force' => false,
-            ],
-            $options
-        );
+        $this->force = $options['force'] ?? false;
 
         add_filter('user_has_cap', [$this, 'enableAllCapabilities'], 10, 2);
 
         $key = '';
         try {
             $compiled = [];
-            foreach ($arguments as $path) {
+            foreach ($yamlFiles as $path) {
                 $fixtureFiles = $this->fetchFiles($path);
                 WP_CLI::debug(sprintf('Found %d configurations in "%s"', count($fixtureFiles), $path));
 
@@ -95,7 +117,7 @@ class FixtureCommand
                             continue;
                         }
 
-                        $this->persist($object, $key, $options);
+                        $this->persist($object, $key);
                         $compiled[$key] = $object;
                     }
                 }
@@ -125,7 +147,6 @@ class FixtureCommand
 
     private function fetchFiles($path, $prefix = '', $suffix = '.yaml'): array
     {
-
         if (is_file($path)) {
             if (!preg_match('/^' . preg_quote($prefix, '/') . '.*' . preg_quote($suffix, '/') . '$/', $path)) {
                 return [];
@@ -159,14 +180,9 @@ class FixtureCommand
         return array_merge(...$files);
     }
 
-    /**
-     * @var NativeLoader
-     */
-    private $loader;
-
-    private function persist($object, string $fixtureName, array $options)
+    private function persist($object, string $fixtureName)
     {
-        if (!$options['force']) {
+        if (!$this->force) {
             $exists = $this->repo->find($object, $fixtureName);
 
             if (null !== $exists) {
