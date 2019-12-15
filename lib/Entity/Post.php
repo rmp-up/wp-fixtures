@@ -34,7 +34,6 @@ namespace RmpUp\WordPress\Fixtures\Entity;
 class Post extends \stdClass implements Sanitizable
 {
     use AbbreviationTrait;
-    use DefaultsTrait;
     use ManageTaxonomies;
     use ReduceTrait;
 
@@ -191,7 +190,6 @@ class Post extends \stdClass implements Sanitizable
     public function sanitize(string $fixtureName)
     {
         $this->applyAbbreviations(['post_']);
-        $this->applyDefaults();
 
         if (empty($this->post_content)) {
             $this->post_content = uniqid('Random content for ' . $fixtureName . ' ', true);
