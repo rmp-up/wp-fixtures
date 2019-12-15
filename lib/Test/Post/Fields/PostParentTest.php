@@ -44,6 +44,16 @@ use function WP_CLI\Utils\wp_clear_object_cache;
  *
  * This way "peter" / "Ben" has become a child of "tyler" / "Jerry".
  *
+ * But sometimes you don't want to describe the parent or child that much.
+ * In that case use a provider
+ * and shrink it down to this:
+ *
+ * ```yaml
+ * \RmpUp\WordPress\Fixtures\Entity\Post:
+ *   peter:
+ *     post_parent: '<wpPost()>'
+ * ```
+ *
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-12-15
  */
@@ -61,6 +71,23 @@ class PostParentTest extends AbstractTestCase
         static::assertInstanceOf(WP_Post::class, $tyler, 'Could not load tyler');
 
         static::assertSame($this->compiledFixtures['tyler']->ID, $tyler->ID, 'Tyler should not have different ID');
+    }
+
+    public function testCreatesRandomParent()
+    {
+        $data = $this->loadFromDocComment(1);
+        static::assertCount(1, $data); // assert that we loaded the correct one
+
+        $this->repo()->persist($data['peter'], 'peter');
+        wp_cache_flush();
+
+        $peter = get_post($data['peter']->ID);
+
+        static::assertInstanceOf(WP_Post::class, $peter);
+        static::assertNotEmpty($peter->post_parent);
+        static::assertInstanceOf(WP_Post::class, get_post($peter->post_parent));
+
+        $this->repo()->delete($data['peter'], 'peter');
     }
 
     protected function setUp()

@@ -28,6 +28,7 @@ use Nelmio\Alice\Loader\NativeLoader;
 use PHPUnit\Framework\TestCase;
 use RmpUp\WordPress\Fixtures\Entity\Post;
 use RmpUp\WordPress\Fixtures\Entity\User;
+use RmpUp\WordPress\Fixtures\Faker\LoaderFactory;
 use RmpUp\WordPress\Fixtures\Repository\Posts;
 use RmpUp\WordPress\Fixtures\Repository\Users;
 use RmpUp\WordPress\Fixtures\RepositoryFacade;
@@ -137,7 +138,7 @@ abstract class AbstractTestCase extends TestCase
     protected function alice()
     {
         if (false === $this->alice instanceof NativeLoader) {
-            $this->alice = new NativeLoader();
+            $this->alice = (new LoaderFactory())->createNativeLoader();
         }
 
         return $this->alice;
