@@ -58,7 +58,7 @@ abstract class AbstractTestCase extends TestCase
     private $users;
 
     protected $fixtures = [];
-    private $compiledFixtures;
+    protected $compiledFixtures;
 
     protected function setUp()
     {
