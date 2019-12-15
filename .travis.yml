@@ -80,6 +80,7 @@ script:
   - composer validate --strict --no-check-lock
   - vendor/bin/phpunit --coverage-clover coverage.xml
   - vendor/bin/phpstan analyse --no-progress lib/
+  - composer require --dev roave/security-advisories:dev-master
 
 after_script:
   # upload coverage.xml file to Coveralls to analyze it
