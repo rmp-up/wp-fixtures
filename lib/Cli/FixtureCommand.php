@@ -27,6 +27,7 @@ namespace RmpUp\WordPress\Fixtures\Cli;
 use Exception;
 use Nelmio\Alice\FileLoaderInterface;
 use Nelmio\Alice\Loader\NativeLoader;
+use RmpUp\WordPress\Fixtures\Faker\LoaderFactory;
 use RmpUp\WordPress\Fixtures\Repository\RepositoryInterface;
 use RmpUp\WordPress\Fixtures\RepositoryFacade;
 use RmpUp\WordPress\Fixtures\RepositoryFactory;
@@ -67,7 +68,7 @@ class FixtureCommand
     public function __construct(FileLoaderInterface $loader = null, RepositoryInterface $repo = null)
     {
         if (null === $loader) {
-            $loader = new NativeLoader();
+            $loader = (new LoaderFactory())->createNativeLoader();
         }
 
         if (null === $repo) {

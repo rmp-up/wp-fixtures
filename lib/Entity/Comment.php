@@ -24,6 +24,8 @@ declare(strict_types=1);
 
 namespace RmpUp\WordPress\Fixtures\Entity;
 
+use WP_Post;
+
 /**
  * Comment
  *
@@ -33,6 +35,7 @@ namespace RmpUp\WordPress\Fixtures\Entity;
 class Comment extends \stdClass implements Sanitizable
 {
     use AbbreviationTrait;
+    use ReduceTrait;
 
     public $comment_ID;
     public $comment_post_ID;
@@ -49,8 +52,13 @@ class Comment extends \stdClass implements Sanitizable
     {
         $this->applyAbbreviations(['comment_']);
 
-        if ($this->comment_post_ID instanceof Post) {
-            $this->comment_post_ID = $this->comment_post_ID->ID;
-        }
+        $this->reduce(
+            [
+                'comment_post_ID' => [
+                    Post::class => 'ID',
+                    WP_Post::class => 'ID',
+                ]
+            ]
+        );
     }
 }
