@@ -21,20 +21,30 @@ env:
     # All jobs shall share the composer cache
     - CACHE_NAME=$TRAVIS_BRANCH
   matrix:
+    # Only testing the edges with all versions
+    - WP_VERSION=5.3.* WOO_VERSION="3.8.*"
+    - WP_VERSION=4.5.* WOO_VERSION="3.0.*"
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
-    - WP_VERSION=5.3.* WOO_VERSION="3.8.*"
-    - WP_VERSION=5.2.* WOO_VERSION="3.7.*"
-    - WP_VERSION=5.1.* WOO_VERSION="3.6.*"
-    - WP_VERSION=5.0.* WOO_VERSION="3.5.*"
-    - WP_VERSION=4.9.* WOO_VERSION="3.4.*"
-    - WP_VERSION=4.8.* WOO_VERSION="3.3.*"
-    - WP_VERSION=4.7.* WOO_VERSION="3.2.*"
-    - WP_VERSION=4.6.* WOO_VERSION="3.1.*"
-    - WP_VERSION=4.5.* WOO_VERSION="3.0.*"
 
 matrix:
   include:
+    # Testing all other versions in between
+    - php: 7.3
+      env: WP_VERSION=5.2.* WOO_VERSION="3.7.*"
+    - php: 7.2
+      env: WP_VERSION=5.1.* WOO_VERSION="3.6.*"
+    - php: 7.1
+      env: WP_VERSION=5.0.* WOO_VERSION="3.5.*"
+    - php: 7.4
+      env: WP_VERSION=4.9.* WOO_VERSION="3.4.*"
+    - php: 7.3
+      env: WP_VERSION=4.8.* WOO_VERSION="3.3.*"
+    - php: 7.2
+      env: WP_VERSION=4.7.* WOO_VERSION="3.2.*"
+    - php: 7.1
+      env: WP_VERSION=4.6.* WOO_VERSION="3.1.*"
+
     # additional combination among env (as above)
     - php: '5.6'
       env: PHPUNIT_VERSION=~5 WP_VERSION=4.9.*
