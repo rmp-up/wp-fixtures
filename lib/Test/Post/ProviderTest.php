@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * MandatoryTrait.php
+ * ProviderTest.php
  *
  * LICENSE: This source file is created by the company around Mike Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -13,33 +13,24 @@
  * of the license and are unable to obtain it through the web, please send a
  * note to mail@mike-pretzlaw.de so we can mail you a copy.
  *
- * @package    pretzlaw/wp-fixtures
+ * @package    wp-fixtures
  * @copyright  2019 Mike Pretzlaw
  * @license    https://mike-pretzlaw.de/license-generic.txt
- * @link       https://project.mike-pretzlaw.de/pretzlaw/wp-fixtures
- * @since      2019-02-03
+ * @link       https://project.mike-pretzlaw.de/wp-fixtures
+ * @since      2019-12-15
  */
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Entity;
+namespace RmpUp\WordPress\Fixtures\Test\Post;
 
 /**
- * AbbreviationTrait
+ * ProviderTest
  *
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
- * @since      2019-02-03
+ * @since      2019-12-15
  */
-trait DefaultsTrait
+class ProviderTest
 {
-    protected $defaultFixtures = [];
 
-    protected function applyDefaults()
-    {
-        foreach ($this->defaultFixtures as $key => $value) {
-            if (!isset($this->$key)) {
-                $this->$key = $value;
-            }
-        }
-    }
 }
