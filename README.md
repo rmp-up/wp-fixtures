@@ -51,8 +51,8 @@ Tests expand continuously to cover a bigger range one day (see Travis CI).
 
 ## Usage
 
-Lets define a simple page,
-a post using faker
+Lets define one simple page,
+multiple posts by random users
 and plenty of comments within one yaml:
 
 ```yaml
@@ -60,12 +60,10 @@ and plenty of comments within one yaml:
   page_1:
     # Well known wp_insert_post() structure
     post_title: Imprint
-    post_content:
-      """
+    post_content: |
       Beth Doe
       Meestreet 42
       1337 Muskegon
-      """
     meta_input:
       simple: 1
       flat: # will append like add_post_meta
@@ -80,27 +78,18 @@ and plenty of comments within one yaml:
 
 \RmpUp\WordPress\Fixtures\Entity\Post:
   post_{1..10}:
+    post_author: '<wpUser()>'
     post_title: '<sentence()>'
     post_content: '<realText()>'
       
-  # Just three lines to make 10 pages with random content
-  # see https://github.com/fzaninotto/Faker#formatters
-
-
 \RmpUp\WordPress\Fixtures\Entity\Comment:
-  comment_1:
-    # Reference one of the above
-    comment_post_ID: '@post_1'
-    comment_content: 'Jose, what is going on?'
-
   # 100 comments randomly spread among posts
   comment_{2..102}:
     comment_post_ID: '@post_<numberBetween(1,10)>'
     comment_content: '<realText()>'
-    comment_karma: '<numberBetween(5429,87645)>'
 ```
 
-And many more:
+Other possible entities:
 
 * Users
 * Terms
