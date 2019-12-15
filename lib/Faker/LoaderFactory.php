@@ -28,6 +28,7 @@ use Faker\Factory;
 use Faker\Generator;
 use Nelmio\Alice\Loader\NativeLoader;
 use RmpUp\WordPress\Fixtures\Faker\WordPress\WpPostProvider;
+use RmpUp\WordPress\Fixtures\Faker\WordPress\WpUserProvider;
 
 /**
  * LoaderFactory
@@ -39,6 +40,7 @@ class LoaderFactory
 {
     const FAKER_PROVIDER = [
         WpPostProvider::class,
+        WpUserProvider::class,
     ];
 
     /**

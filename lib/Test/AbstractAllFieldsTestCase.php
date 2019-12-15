@@ -35,7 +35,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-12-15
  */
-abstract class AbstractCompleteExampleTestCase extends AbstractTestCase
+abstract class AbstractAllFieldsTestCase extends AbstractTestCase
 {
     /**
      * @var Post

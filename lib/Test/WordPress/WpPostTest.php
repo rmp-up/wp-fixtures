@@ -26,29 +26,28 @@ namespace RmpUp\WordPress\Fixtures\Test\WordPress;
 
 use RmpUp\WordPress\Fixtures\Entity\Comment;
 use RmpUp\WordPress\Fixtures\Entity\Post;
-use RmpUp\WordPress\Fixtures\Test\AbstractCompleteExampleTestCase;
+use RmpUp\WordPress\Fixtures\Test\AbstractAllFieldsTestCase;
 use RmpUp\WordPress\Fixtures\Test\AbstractTestCase;
 use WP_Post;
 
 /**
  * Posts
  *
- * Imagine you like to test things on a comment
- * or need different random post parents.
- * Instead of defining a complete post with all its data
- * you can use this shortcut:
+ * Imagine you write a anti-spam plugin
+ * that should detect spam spread across different posts.
+ * Instead of defining several posts with all its data
+ * you can use `wpPost()` to have new random posts:
  *
  * ```yaml
  * \RmpUp\WordPress\Fixtures\Entity\Comment:
- *   comment_1:
- *     comment_karma: 9001
+ *   spam_{1..10}:
+ *     post_comment: Cold or hot... it hits the spot!
  *     comment_post_ID: '<wpPost()>'
  * ```
  *
- * In this example you care about the karma of a comment
- * but don't care what the contents of the post are.
- * Same when the post-parent is of no interest
- * but need to be there for testing purposes:
+ * This way we have 10 comments on 10 newly generated random posts.
+ *
+ * Another example where the post-parent is something random:
  *
  * ```yaml
  * \RmpUp\WordPress\Fixtures\Entity\Post:
@@ -80,7 +79,7 @@ class WpPostTest extends AbstractTestCase
     public function testCommentHasPost()
     {
         /** @var Comment $comment */
-        $comment = $this->loadFromDocComment(0, 'comment_1');
+        $comment = $this->loadFromDocComment(0, 'spam_1');
         $randomPost = $comment->comment_post_ID;
         $comment->sanitize('');
 

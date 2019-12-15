@@ -25,7 +25,7 @@ declare(strict_types=1);
 namespace RmpUp\WordPress\Fixtures\Test\WordPress\WpPost;
 
 use RmpUp\WordPress\Fixtures\Entity\Post;
-use RmpUp\WordPress\Fixtures\Test\AbstractCompleteExampleTestCase;
+use RmpUp\WordPress\Fixtures\Test\AbstractAllFieldsTestCase;
 
 /**
  * Complete example
@@ -84,7 +84,7 @@ use RmpUp\WordPress\Fixtures\Test\AbstractCompleteExampleTestCase;
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-12-15
  */
-class AllFieldsTest extends AbstractCompleteExampleTestCase
+class AllFieldsTest extends AbstractAllFieldsTestCase
 {
     protected function getTargetClassName(): string
     {
