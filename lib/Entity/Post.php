@@ -36,6 +36,7 @@ class Post extends \stdClass implements Sanitizable
     use AbbreviationTrait;
     use DefaultsTrait;
     use ManageTaxonomies;
+    use ReduceTrait;
 
     /**
      * Post ID.
@@ -204,9 +205,12 @@ class Post extends \stdClass implements Sanitizable
             $this->post_excerpt = $fixtureName . ' excerpt';
         }
 
-        if ($this->post_author instanceof User) {
-            $this->post_author = $this->post_author->ID;
-        }
+        $this->reduce(
+            [
+                'post_author' => [User::class => 'ID'],
+                'post_parent' => [Post::class => 'ID'],
+            ]
+        );
 
         $this->resolveTerms($fixtureName);
     }
