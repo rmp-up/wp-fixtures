@@ -46,8 +46,9 @@ abstract class AbstractCompleteExampleTestCase extends AbstractTestCase
      * @var ReflectionClass
      */
     private $definition;
+    protected $fieldListIndex = 0;
 
-    public function testTrue()
+    public function testListOfFieldsIsComplete()
     {
         $remainder = $this->fullExample;
 
@@ -67,7 +68,7 @@ abstract class AbstractCompleteExampleTestCase extends AbstractTestCase
     {
         $targetClassName = $this->getTargetClassName();
 
-        $data = Yaml::parse($this->getYamlFromDocComment(0));
+        $data = Yaml::parse($this->getYamlFromDocComment($this->fieldListIndex));
 
         static::assertNotEmpty($data, 'No example found');
         static::assertArrayHasKey($targetClassName, $data, 'No example for class found: ' . $targetClassName);

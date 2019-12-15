@@ -30,7 +30,7 @@ namespace RmpUp\WordPress\Fixtures\Entity;
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-03-13
  */
-trait ManageTaxonomies
+trait ManageTaxonomiesTrait
 {
     public function resolveTerms(string $fixtureName)
     {

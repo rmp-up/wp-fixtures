@@ -288,4 +288,16 @@ abstract class AbstractTestCase extends TestCase
 
         return $this->repoFacade;
     }
+
+    /**
+     * Help creating path for very deep nested tests
+     *
+     * @param string $relativePath Relative path based on "lib/"
+     *
+     * @return string
+     */
+    protected function fullPath(string $relativePath): string
+    {
+        return dirname(__DIR__) . '/' . $relativePath;
+    }
 }
