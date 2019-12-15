@@ -42,6 +42,7 @@ class User extends \stdClass implements Validatable, Sanitizable
     public $user_email;
     public $user_login;
     public $user_pass;
+    public $role;
 
     public function validate(string $fixtureName)
     {
