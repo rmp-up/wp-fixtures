@@ -6,7 +6,6 @@ php:
   - '7.3' # Until 6 Dec 2021
   - '7.2' # Until 30 Nov 2020
   - '7.1' # deprecated but we try keeping it up
-  - '7.0' # deprecated but we try covering this
 
 addons:
   apt:
@@ -40,6 +39,7 @@ matrix:
     - php: '5.6'
       env: PHPUNIT_VERSION=~5 WP_VERSION=4.9.*
     - php: '7.0'
+      env: WP_VERSION="5.0.*" WOO_VERSION="3.5.*"
     # Special cases
     - php: '7.1' # unstable semver in phpunit ~7
       env: PHPUNIT_VERSION="~7" WP_VERSION=4.9.*
