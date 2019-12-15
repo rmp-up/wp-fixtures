@@ -22,7 +22,7 @@
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Test\Post;
+namespace RmpUp\WordPress\Fixtures\Test\Post\Fields;
 
 use RmpUp\WordPress\Fixtures\Test\AbstractTestCase;
 
@@ -30,7 +30,7 @@ use RmpUp\WordPress\Fixtures\Test\AbstractTestCase;
  * Author
  *
  * The post_author usually is an ID but can also refer to another
- * configuration:
+ * entity:
  *
  * ```yaml
  * \RmpUp\WordPress\Fixtures\Entity\User:
@@ -46,14 +46,14 @@ use RmpUp\WordPress\Fixtures\Test\AbstractTestCase;
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-02-03
  */
-class PostAuthor extends AbstractTestCase
+class PostAuthorTest extends AbstractTestCase
 {
     public function testUserIsSet()
     {
-        $objects = $this->loadFromDocComment(1);
+        $objects = $this->loadFromDocComment(0);
 
-        $this->users()->persist($objects['user_1']);
-        $this->posts()->persist($objects['post_1']);
+        $this->users()->persist($objects['user_1'], 'user_1');
+        $this->posts()->persist($objects['post_1'], 'post_1');
 
         $post = get_post($objects['post_1']->ID);
 

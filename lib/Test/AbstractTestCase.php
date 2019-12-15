@@ -191,7 +191,7 @@ abstract class AbstractTestCase extends TestCase
      * @param int $int
      * @return array|\stdClass
      */
-    protected function loadFromDocComment(int $int, $key = null)
+    protected function loadFromDocComment(int $int = 0, $key = null)
     {
         try {
             $objects = $this->alice()->loadData(Yaml::parse($this->getYamlFromDocComment($int)))->getObjects();
@@ -215,7 +215,7 @@ abstract class AbstractTestCase extends TestCase
      * @return string
      * @throws \ReflectionException
      */
-    private function getYamlFromDocComment(int $index): string
+    protected function getYamlFromDocComment(int $index): string
     {
         $class = new \ReflectionObject($this);
         $docComment = $class->getDocComment();

@@ -64,14 +64,6 @@ class Post extends \stdClass implements Sanitizable
     public $post_date;
 
     /**
-     * The post's GMT publication time.
-     *
-     * @since 3.5.0
-     * @var string
-     */
-    public $post_date_gmt;
-
-    /**
      * The post's content.
      *
      * @since 3.5.0
@@ -158,14 +150,6 @@ class Post extends \stdClass implements Sanitizable
      * @var string
      */
     public $post_modified;
-
-    /**
-     * The post's GMT modified time.
-     *
-     * @since 3.5.0
-     * @var string
-     */
-    public $post_modified_gmt;
 
     /**
      * ID of a post's parent post.
