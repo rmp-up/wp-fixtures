@@ -30,6 +30,8 @@ use RmpUp\WordPress\Fixtures\Test\AbstractTestCase;
 /**
  * ResolveByGuidTest
  *
+ * @internal
+ *
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-02-03
  */
