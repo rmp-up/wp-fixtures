@@ -34,7 +34,7 @@ namespace RmpUp\WordPress\Fixtures\Entity;
 class Post extends \stdClass implements Sanitizable
 {
     use AbbreviationTrait;
-    use ManageTaxonomies;
+    use ManageTaxonomiesTrait;
     use ReduceTrait;
 
     /**

@@ -22,7 +22,7 @@
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Test\WordPress\Provider\WpPost;
+namespace RmpUp\WordPress\Fixtures\Test\WordPress\WpPost;
 
 use DomainException;
 use Faker\Factory;

@@ -27,6 +27,8 @@ namespace RmpUp\WordPress\Fixtures\Entity;
 /**
  * InvalidEntityException
  *
+ * @internal
+ *
  * @copyright  2018 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-02-02
  */

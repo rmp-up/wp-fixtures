@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * FieldsTest.php
+ * AllFieldsTest.php
  *
  * LICENSE: This source file is created by the company around Mike Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -22,17 +22,16 @@
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Test\Post;
+namespace RmpUp\WordPress\Fixtures\Test\WordPress\WpPost;
 
-use ReflectionClass;
 use RmpUp\WordPress\Fixtures\Entity\Post;
 use RmpUp\WordPress\Fixtures\Test\AbstractCompleteExampleTestCase;
-use RmpUp\WordPress\Fixtures\Test\AbstractTestCase;
 
 /**
- * Fields
+ * Complete example
  *
- * Dealing with posts it is possible to fill in these fields:
+ * When you want to define specific fields of a post
+ * then you'll need to use the post entity as in this complete example:
  *
  * ```yaml
  * RmpUp\WordPress\Fixtures\Entity\Post:
@@ -82,13 +81,10 @@ use RmpUp\WordPress\Fixtures\Test\AbstractTestCase;
  *   another_post: ~
  * ```
  *
- * This is a complete example
- * and we will explain the details to some fields.
- *
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-12-15
  */
-class FieldsTest extends AbstractCompleteExampleTestCase
+class AllFieldsTest extends AbstractCompleteExampleTestCase
 {
     protected function getTargetClassName(): string
     {

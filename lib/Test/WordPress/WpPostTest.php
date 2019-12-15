@@ -22,19 +22,21 @@
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Test\WordPress\Provider;
+namespace RmpUp\WordPress\Fixtures\Test\WordPress;
 
 use RmpUp\WordPress\Fixtures\Entity\Comment;
+use RmpUp\WordPress\Fixtures\Entity\Post;
+use RmpUp\WordPress\Fixtures\Test\AbstractCompleteExampleTestCase;
 use RmpUp\WordPress\Fixtures\Test\AbstractTestCase;
 use WP_Post;
 
 /**
- * Creating a random post via `<wpPost()>`
+ * Posts
  *
  * Imagine you like to test things on a comment
  * or need different random post parents.
- * Instead of writing all of those posts with all their data
- * we provide a shortcut:
+ * Instead of defining a complete post with all its data
+ * you can use this shortcut:
  *
  * ```yaml
  * \RmpUp\WordPress\Fixtures\Entity\Comment:
@@ -43,7 +45,7 @@ use WP_Post;
  *     comment_post_ID: '<wpPost()>'
  * ```
  *
- * In this case you care about the karma of a comment
+ * In this example you care about the karma of a comment
  * but don't care what the contents of the post are.
  * Same when the post-parent is of no interest
  * but need to be there for testing purposes:
@@ -65,9 +67,10 @@ use WP_Post;
  *
  *   child_1:
  *     post_title: Dylan
- *     post_parent: '@kee'
+ *     post_parent: '@mother'
  * ```
  *
+ * The following examples show how to define a post in detail.
  *
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-12-15
