@@ -22,7 +22,7 @@
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Test\Post\Fields;
+namespace RmpUp\WordPress\Fixtures\Test\WordPress\WpPost;
 
 use RmpUp\WordPress\Fixtures\Test\AbstractTestCase;
 use WP_Post;
