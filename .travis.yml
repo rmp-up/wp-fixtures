@@ -84,8 +84,9 @@ script:
 
 after_script:
   # upload coverage.xml file to Coveralls to analyze it
-  - composer require php-coveralls/php-coveralls # reinstall dev
-  - vendor/bin/coveralls --verbose
+  - rm composer.json composer.lock # to prevent conflicts
+  - composer require --dev 'php-coveralls/php-coveralls:^2.2'
+  - travis_retry php vendor/bin/php-coveralls
 
 after_failure:
   - cat srv/wp-content/debug.log || true
