@@ -25,16 +25,20 @@ declare(strict_types=1);
 namespace RmpUp\WordPress\Fixtures\Faker\WordPress;
 
 use Faker\Generator;
-use RuntimeException;
+use RmpUp\WordPress\Fixtures\Faker\WordPress;
 
 /**
  * WpUserProvider
  *
  * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
  * @since      2019-12-15
+ *
+ * @deprecated 0.9.0 Use \RmpUp\WordPress\Fixtures\Faker\WordPressProvider instead.
  */
 class WpUserProvider
 {
+    use WordPress;
+
     /**
      * @var Generator
      */
@@ -46,29 +50,10 @@ class WpUserProvider
     }
 
     /**
-     * Create a new WP_User with random data.
-     *
-     * @return \WP_User
+     * @inheritDoc
      */
-    public function wpUser(): \WP_User
+    protected function generator(): Generator
     {
-        $id = wp_create_user(
-            uniqid('wp_fixture_user', true),
-            md5(uniqid('wp_fixture_user', true)),
-            uniqid('', true) . '@' . $this->generator->safeEmailDomain
-        );
-
-        if ($id instanceof \WP_Error) {
-            throw new RuntimeException('Could not create random user: ' . $id->get_error_message());
-        }
-
-        wp_cache_flush();
-        $user = get_user_by('id', $id);
-
-        if (false === $user instanceof \WP_User) {
-            throw new \DomainException('Could not fetch random user: ' . $id);
-        }
-
-        return $user;
+        return $this->generator;
     }
 }

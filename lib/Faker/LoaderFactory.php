@@ -39,8 +39,7 @@ use RmpUp\WordPress\Fixtures\Faker\WordPress\WpUserProvider;
 class LoaderFactory
 {
     const FAKER_PROVIDER = [
-        WpPostProvider::class,
-        WpUserProvider::class,
+        WordPressProvider::class,
     ];
 
     /**
