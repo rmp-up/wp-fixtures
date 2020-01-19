@@ -7,6 +7,7 @@
       "RmpUp\\WordPress\\Fixtures\\": "lib/"
     },
     "files": [
+      "lib/compat.php",
       "lib/wp-cli.php"
     ]
   },

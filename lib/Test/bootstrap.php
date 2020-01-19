@@ -20,5 +20,3 @@ function rmp_wp_fixture_all_caps($allcaps, $caps)
 add_filter('user_has_cap', 'rmp_wp_fixture_all_caps', 10, 2);
 
 require_once ABSPATH . '/wp-admin/includes/user.php';
-
-require_once __DIR__ . '/../compat.php';
