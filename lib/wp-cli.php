@@ -1,7 +1,7 @@
 <?php
 
 // Only load this plugin once and bail if WP CLI is not present
-if (!defined('WP_CLI')) {
+if (false === defined('WP_CLI')) {
     return;
 }
 

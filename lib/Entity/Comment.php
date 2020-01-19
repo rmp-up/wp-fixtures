@@ -13,17 +13,17 @@
  * of the license and are unable to obtain it through the web, please send a
  * note to mail@mike-pretzlaw.de so we can mail you a copy.
  *
- * @package    pretzlaw/wp-fixtures
- * @copyright  2019 Mike Pretzlaw
- * @license    https://mike-pretzlaw.de/license-generic.txt
- * @link       https://project.mike-pretzlaw.de/pretzlaw/wp-fixtures
- * @since      2019-02-03
+ * @package   pretzlaw/wp-fixtures
+ * @copyright 2019 Mike Pretzlaw
+ * @license   https://mike-pretzlaw.de/license-generic.txt
+ * @link      https://project.mike-pretzlaw.de/pretzlaw/wp-fixtures
  */
 
 declare(strict_types=1);
 
 namespace RmpUp\WordPress\Fixtures\Entity;
 
+use DateTime;
 use WP_Post;
 
 /**
@@ -37,14 +37,22 @@ class Comment extends \stdClass implements Sanitizable
     use AbbreviationTrait;
     use ReduceTrait;
 
-    public $comment_ID;
-    public $comment_post_ID;
+    public $id;
+    public $post;
+    public $content;
+    public $date;
+    public $approved;
+    public $author;
+    public $author_email;
+    public $author_ip;
+    public $author_url;
 
     public function __construct()
     {
         $this->abbreviations = [
-            'post' => 'comment_post_ID',
-            'comment_post' => 'comment_post_ID',
+            'comment_post_ID' => 'post',
+            'comment_post' => 'post',
+            'post_id' => 'post',
         ];
     }
 
@@ -54,9 +62,14 @@ class Comment extends \stdClass implements Sanitizable
 
         $this->reduce(
             [
-                'comment_post_ID' => [
+                'post' => [
                     Post::class => 'ID',
                     WP_Post::class => 'ID',
+                ],
+                'date' => [
+                    DateTime::class => function (DateTime $date) {
+                        return $date->format(DateTime::ATOM);
+                    }
                 ]
             ]
         );

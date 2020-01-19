@@ -32,6 +32,8 @@ namespace RmpUp\WordPress\Fixtures\Repository;
  */
 interface RepositoryInterface
 {
+    const FIXTURE_NAME_META = '_fixture_name';
+
     /**
      * @param object $object Fixture data.
      * @param string $fixtureName Key as provided in fixture config

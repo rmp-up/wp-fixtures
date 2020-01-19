@@ -13,11 +13,10 @@
  * of the license and are unable to obtain it through the web, please send a
  * note to mail@mike-pretzlaw.de so we can mail you a copy.
  *
- * @package    wp-fixtures
- * @copyright  2019 Mike Pretzlaw
- * @license    https://mike-pretzlaw.de/license-generic.txt
- * @link       https://project.mike-pretzlaw.de/wp-fixtures
- * @since      2019-12-15
+ * @package   wp-fixtures
+ * @copyright 2019 Mike Pretzlaw
+ * @license   https://rmp-up.de/license-generic.txt
+ * @link      https://rmp-up.de/wp-fixtures
  */
 
 declare(strict_types=1);
@@ -27,8 +26,7 @@ namespace RmpUp\WordPress\Fixtures\Entity;
 /**
  * Reduce references to primitives
  *
- * @copyright  2019 Mike Pretzlaw (https://mike-pretzlaw.de)
- * @since      2019-12-15
+ * @copyright 2020 Mike Pretzlaw (https://mike-pretzlaw.de)
  */
 trait ReduceTrait
 {
@@ -56,18 +54,38 @@ trait ReduceTrait
      */
     public function reduce($map)
     {
-        foreach ($map as $fieldName => $foreign) {
+        foreach ($map as $fieldName => $typeToStrategy) {
             $currentValue = $this->{$fieldName};
             if (false === is_object($currentValue)) {
                 continue;
             }
 
-            foreach ($foreign as $foreignType => $foreignField) {
-                if ($currentValue instanceof $foreignType) {
-                    $this->{$fieldName} = $currentValue->{$foreignField};
-                    continue 2;
-                }
-            }
+            $this->{$fieldName} = $this->reduceByType($this->{$fieldName}, $typeToStrategy);
         }
+    }
+
+    /**
+     * Mapping from type to reduction
+     *
+     * @param mixed $value
+     * @param array $typeToStrategy
+     *
+     * @return mixed
+     */
+    protected function reduceByType($value, $typeToStrategy)
+    {
+        foreach ($typeToStrategy as $foreignType => $foreignField) {
+            if (false === $value instanceof $foreignType) {
+                continue;
+            }
+
+            if ($foreignField instanceof \Closure) {
+                return $foreignField($value);
+            }
+
+            return $value->{$foreignField};
+        }
+
+        return $value;
     }
 }

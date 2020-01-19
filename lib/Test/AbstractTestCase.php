@@ -33,7 +33,7 @@ use RmpUp\WordPress\Fixtures\Repository\Posts;
 use RmpUp\WordPress\Fixtures\Repository\Users;
 use RmpUp\WordPress\Fixtures\RepositoryFacade;
 use RmpUp\WordPress\Fixtures\RepositoryFactory;
-use RmpUp\WordPress\Fixtures\Test\Helper\FullExampleTestCase;
+use RmpUp\WordPress\Fixtures\Test\Helper\FullExample;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -44,7 +44,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 abstract class AbstractTestCase extends TestCase
 {
-    use FullExampleTestCase;
+    use FullExample;
 
     /**
      * @var NativeLoader

@@ -42,7 +42,7 @@ use WP_Post;
  * \RmpUp\WordPress\Fixtures\Entity\Comment:
  *   spam_{1..10}:
  *     post_comment: Cold or hot... it hits the spot!
- *     comment_post_ID: '<wpPost()>'
+ *     post: '<wpPost()>'
  * ```
  *
  * This way we have 10 comments on 10 newly generated random posts.
@@ -80,10 +80,10 @@ class WpPostTest extends AbstractTestCase
     {
         /** @var Comment $comment */
         $comment = $this->loadFromDocComment(0, 'spam_1');
-        $randomPost = $comment->comment_post_ID;
+        $randomPost = $comment->post;
         $comment->sanitize('');
 
-        $postId = $comment->comment_post_ID;
+        $postId = $comment->post;
         static::assertGreaterThan(0, $postId);
 
         $post = get_post($postId);
