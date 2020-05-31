@@ -1,0 +1,98 @@
+language: php
+
+php:
+  # see http://php.net/supported-versions.php
+  - '7.4' # Until 28 Nov 2022
+  - '7.3' # Until 6 Dec 2021
+  - '7.2' # Until 30 Nov 2020
+  - '7.1' # deprecated but we try keeping it up
+
+addons:
+  apt:
+    packages:
+      - parallel
+
+env:
+  global:
+    - PHPUNIT_VERSION="~7|~8"
+    - COMPOSER_CACHE_DIR=/home/travis/.composer
+    - WP_VERSION="*"
+    # All jobs shall share the composer cache
+    - CACHE_NAME=$TRAVIS_BRANCH
+  matrix:
+    # Only testing the edges with all versions
+    - WP_VERSION=5.3.*
+    - WP_VERSION=4.6.*
+    # see https://codex.wordpress.org/WordPress_Versions
+    # see https://phpunit.de/supported-versions.html
+
+matrix:
+  include:
+    # Testing all other versions in between
+    - php: 7.3
+      env: WP_VERSION=5.2.*
+    - php: 7.2
+      env: WP_VERSION=5.1.*
+    - php: 7.1
+      env: WP_VERSION=5.0.*
+    - php: 7.4
+      env: WP_VERSION=4.9.*
+    - php: 7.3
+      env: WP_VERSION=4.8.*
+    - php: 7.2
+      env: WP_VERSION=4.7.*
+    - php: 7.1
+      env: WP_VERSION=4.6.*
+
+    # additional combination among env (as above)
+    - php: '5.6'
+      env: PHPUNIT_VERSION=~5
+    - php: '7.0'
+      env: WP_VERSION="5.0.*"
+  allow_failures:
+    # other things in the process to achieve support
+    - php: '5.6'
+    - php: '7.0'
+    - env: WP_VERSION=dev-master
+  # Do not wait for allowed failures
+  fast_finish: true
+
+services:
+  - mysql
+
+cache:
+  directories:
+    - $HOME/.composer
+
+before_install:
+  - mysql -e 'CREATE DATABASE dev;'
+  # Try supporting other versions
+  - |
+    composer require --update-with-dependencies \
+    johnpbloch/wordpress:$WP_VERSION \
+    phpunit/phpunit:$PHPUNIT_VERSION
+  # Rerun install because downloading WordPress may overwrite plugins
+  - composer install
+
+install:
+  - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1" --skip-check
+  - vendor/bin/wp --allow-root core multisite-install --skip-email
+  - touch .multisite # to activate the MS part of wp-config.php
+  - vendor/bin/wp --allow-root plugin activate --all
+  - for L in etc/*; do ln -s $L; done
+  - ln -s etc/.coveralls.yml
+
+script:
+  - composer validate --strict --no-check-lock
+  - vendor/bin/phpunit --coverage-clover coverage.xml
+  - vendor/bin/phpstan analyse --no-progress lib/
+  - composer require --dev roave/security-advisories:dev-master
+
+after_script:
+  # upload coverage.xml file to Coveralls to analyze it
+  - rm composer.json composer.lock # to prevent conflicts
+  - composer require --dev 'php-coveralls/php-coveralls:^2.2'
+  - travis_retry php vendor/bin/php-coveralls
+
+after_failure:
+  - cat srv/wp-content/debug.log || true

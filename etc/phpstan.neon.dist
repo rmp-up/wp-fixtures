@@ -1,0 +1,16 @@
+parameters:
+    level: 7
+    inferPrivatePropertyTypeFromConstructor: true
+    autoload_directories:
+        - ./lib
+    autoload_files:
+        - ./vendor/autoload.php
+        - ./opt/doc/bootstrap.php
+    excludes_analyse:
+        - ./lib/Test
+        - ./lib/compat.php
+        - ./lib/wp-cli.php
+        - ./lib/bootstrap.php
+        - ./lib/Repository/WooCommerce/ProductBundles/Bundles.php
+    ignoreErrors:
+        - '# on an unknown class WP_CLI.#'

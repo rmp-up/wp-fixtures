@@ -1,0 +1,49 @@
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/7.0/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         convertNoticesToExceptions="false"
+         convertDeprecationsToExceptions="false"
+         bootstrap="opt/doc/bootstrap.php"
+>
+    <testsuites>
+        <testsuite name="default">
+            <directory>opt/doc</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <server name="REQUEST_URI" value="127.0.0.1" />
+    </php>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>lib/</directory>
+            <exclude>
+                <directory>lib/Test</directory>
+                <file>lib/Cli/FixtureCommand.php</file>
+                <file>lib/compat.php</file>
+                <file>lib/wp-cli.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <listeners>
+        <listener class="Pretzlaw\PHPUnit\DocGen\TestCaseListener">
+            <arguments>
+                <string>var/documentation.md</string>
+            </arguments>
+        </listener>
+        <listener class="Pretzlaw\PHPUnit\DocGen\TestCaseListener">
+            <arguments>
+                <string>var/documentation.html</string>
+                <string>rmp-up/wp-fixtures - Expressive fixtures persistence in WordPress (and some plugins)</string>
+                <string>etc/documentation.css</string>
+            </arguments>
+        </listener>
+    </listeners>
+
+    <logging>
+        <log type="coverage-html" target="var/phpunit" lowUpperBound="50" highLowerBound="80"/>
+    </logging>
+</phpunit>

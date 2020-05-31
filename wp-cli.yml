@@ -1,0 +1,42 @@
+path: srv
+
+apache_modules:
+  - mod_rewrite
+
+core multisite-install:
+  url: http://10.211.3.71
+  title: "New website"
+  admin_user: "admin"
+  admin_password: "letmein"
+  admin_email: "foo@example.org"
+
+core config:
+  dbhost: db
+  dbuser: dev
+  dbpass: dev
+  dbname: dev
+  dbprefix: wp_
+  dbcharset: utf8
+  locale: en_GB
+  extra-php: |
+    define( 'WP_ALLOW_MULTISITE', true );
+
+    if ( is_readable( '.multisite' ) ) {
+      define( 'MULTISITE', true );
+      define( 'SUBDOMAIN_INSTALL', false );
+      define( 'DOMAIN_CURRENT_SITE', '10.211.3.71' );
+      define( 'PATH_CURRENT_SITE', '/' );
+      define( 'SITE_ID_CURRENT_SITE', 1 );
+      define( 'BLOG_ID_CURRENT_SITE', 1 );
+    }
+
+    // for development only
+    define( 'AUTOMATIC_UPDATER_DISABLED', true ); // no automatic updates
+    define( 'IMAGE_EDIT_OVERWRITE', true);        // developer may overwrite images
+    define( 'SCRIPT_DEBUG', true);                // do not minimize scripts
+    define( 'WP_CACHE', false );                  // do not cache
+
+    define( 'WP_DEBUG', true );
+    define( 'WP_DEBUG_DISPLAY', false );
+    define( 'WP_DEBUG_LOG', true );
+

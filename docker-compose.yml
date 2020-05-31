@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  php71: &php
+    image: pretzlaw/php:7.1-apache
+    volumes:
+      - ".:/var/www"
+      - "$COMPOSER_LOCAL:/var/composer"
+    env_file: [.env]
+    networks:
+      default:
+        ipv4_address: 10.211.3.71
+
+  php73:
+    <<: *php
+    image: php:7.3-apache
+    networks:
+      default:
+        ipv4_address: 10.211.3.73
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - ".docker/db:/var/lib/mysql"
+    environment:
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_DATABASE: dev
+      MYSQL_ROOT_PASSWORD: dev
+    networks:
+      default:
+        ipv4_address: 10.211.3.157
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 10.211.3.0/24

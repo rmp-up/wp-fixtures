@@ -1,0 +1,4 @@
+WP_Post:
+  wp_posts_persist_test:
+    post_title: <title()>
+    post_content: <text()>
