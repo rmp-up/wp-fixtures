@@ -35,7 +35,7 @@ use Symfony\Component\Finder\Finder;
  * for testing purposes
  * or to show your customer different examples how a website could look like.
  *
- * In terms of WordPress you can fill the following types/things with data:
+ * In terms of WordPress you can fill the following entities with data:
  *
  * * Options
  * * WP_Comment
@@ -44,6 +44,14 @@ use Symfony\Component\Finder\Finder;
  * * WP_Site
  * * WP_Term
  * * WP_User
+ *
+ * And they can also be persisted to the database.
+ *
+ * Furthermore the following data-objects can be filled with life:
+ *
+ * * WP_Comment_Query
+ * * WP_Term_Query
+ * * WP_User_Query
  *
  * @copyright 2020 Pretzlaw (https://rmp-up.de)
  */
@@ -157,7 +165,6 @@ class WordPressTest extends TestCase
      * * WP_Admin_Bar
      * * WP_Ajax_Response
      * * WP_Block_*
-     * * WP_Comment_Query
      * * WP_Customize_*
      * * WP_Date_Query
      * * WP_Embed
@@ -189,12 +196,10 @@ class WordPressTest extends TestCase
      * * WP_Site_Query
      * * WP_Tax_Query
      * * WP_Taxonomy
-     * * WP_Term_Query
      * * WP_Text_Diff_Renderer_Table
      * * WP_Text_Diff_Renderer_inline
      * * WP_Theme
      * * WP_User_Meta_Session_Tokens
-     * * WP_User_Query
      * * WP_User_Request
      * * WP_Widget
      * * WP_Widget_*
@@ -202,12 +207,7 @@ class WordPressTest extends TestCase
      * * WP_oEmbed_Controller
      * * WP_Object_Cache
      * * Walker
-     * * Walker_Category
-     * * Walker_CategoryDropdown
-     * * Walker_Comment
-     * * Walker_Nav_Menu
-     * * Walker_Page
-     * * Walker_PageDropdown
+     * * Walker_*
      * * _WP_Dependency
      * * _WP_Editors
      * * wp_xmlrpc_server
@@ -217,7 +217,10 @@ class WordPressTest extends TestCase
     public function testScope()
     {
         $coveredClasses = array_flip(
-            $this->classComment()->ul(0)->li()->all()->map('strval')->getArrayCopy()
+            array_merge(
+                $this->classComment()->ul(0)->li()->all()->map('strval')->getArrayCopy(),
+                $this->classComment()->ul(1)->li()->all()->map('strval')->getArrayCopy()
+            )
         );
 
         $ignoredClasses = array_flip(
