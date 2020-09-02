@@ -80,10 +80,13 @@ class WordPressFixtureLoader extends NativeLoader
                 WP_Comment::class,
                 WP_Post::class => static function ($instance) {
                     $instance->tax_input = [];
+                    $instance->meta_input = [];
                 },
                 WP_Role::class,
                 WP_Site::class,
-                WP_Term::class,
+                WP_Term::class => static function ($instance) {
+                    $instance->meta_input = [];
+                },
                 WP_User::class => static function ($instance) {
                     $instance->data = new stdClass();
                 },
