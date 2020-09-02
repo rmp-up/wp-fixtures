@@ -52,6 +52,8 @@ class Terms extends AbstractRepository
             throw new PersistException($object, $insertData);
         }
 
+        $this->updateMetaData('term', $insertData['term_id'], $object->meta_input ?? []);
+
         return (int) $insertData['term_id'];
     }
 
@@ -153,5 +155,7 @@ class Terms extends AbstractRepository
         if ($termData instanceof WP_Error) {
             throw new RepositoryException($object, $termData);
         }
+
+        $this->updateMetaData('term', $termData['term_id'], $object->meta_input ?? []);
     }
 }
