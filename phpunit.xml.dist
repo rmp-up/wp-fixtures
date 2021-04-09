@@ -14,6 +14,7 @@
 
     <php>
         <server name="REQUEST_URI" value="127.0.0.1" />
+        <ini name="xdebug.mode" value="coverage" />
     </php>
 
     <filter>
@@ -27,21 +28,6 @@
             </exclude>
         </whitelist>
     </filter>
-
-    <listeners>
-        <listener class="Pretzlaw\PHPUnit\DocGen\TestCaseListener">
-            <arguments>
-                <string>var/documentation.md</string>
-            </arguments>
-        </listener>
-        <listener class="Pretzlaw\PHPUnit\DocGen\TestCaseListener">
-            <arguments>
-                <string>var/documentation.html</string>
-                <string>rmp-up/wp-fixtures - Expressive fixtures persistence in WordPress (and some plugins)</string>
-                <string>etc/documentation.css</string>
-            </arguments>
-        </listener>
-    </listeners>
 
     <logging>
         <log type="coverage-html" target="var/phpunit" lowUpperBound="50" highLowerBound="80"/>
