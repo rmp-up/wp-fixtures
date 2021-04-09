@@ -38,10 +38,12 @@ use RmpUp\WordPress\Fixtures\Faker\Generator\AutoFillIdIntoField;
 use RmpUp\WordPress\Fixtures\Faker\Generator\DateTimeFormat;
 use RmpUp\WordPress\Fixtures\Faker\Generator\ExpandPrefix;
 use RmpUp\WordPress\Fixtures\Faker\Generator\ReduceToReference;
+use RmpUp\WordPress\Fixtures\Faker\Instantiator\AssertPropertiesAreAccessible;
 use RmpUp\WordPress\Fixtures\Faker\WordPress\WpPostProvider;
 use RmpUp\WordPress\Fixtures\Faker\WordPress\WpUserProvider;
 use stdClass;
 use WP_Comment;
+use WP_Object_Cache;
 use WP_Post;
 use WP_Role;
 use WP_Site;
@@ -78,8 +80,16 @@ class WordPressFixtureLoader extends NativeLoader
         return new BypassConstructorInstantiator(
             [
                 WP_Comment::class,
+                WP_Object_Cache::class => [
+                    new AssertPropertiesAreAccessible([
+                        'blog_prefix',
+                        'global_groups',
+                        'multisite',
+                    ])
+                ],
                 WP_Post::class => static function ($instance) {
                     $instance->tax_input = [];
+                    $instance->meta_input = [];
                 },
                 WP_Role::class,
                 WP_Site::class,
