@@ -13,10 +13,17 @@ services:
 
   php73:
     <<: *php
-    image: php:7.3-apache
+    image: pretzlaw/php:7.3-apache
     networks:
       default:
         ipv4_address: 10.211.3.73
+
+  php74:
+    <<: *php
+    image: pretzlaw/php:7.4-apache
+    networks:
+      default:
+        ipv4_address: 10.211.3.74
 
   db:
     image: mysql:5.7
