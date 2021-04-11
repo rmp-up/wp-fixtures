@@ -13,7 +13,7 @@
     </testsuites>
 
     <php>
-        <server name="REQUEST_URI" value="127.0.0.1" />
+        <server name="REQUEST_URI" value="10.211.3.71" />
     </php>
 
     <filter>

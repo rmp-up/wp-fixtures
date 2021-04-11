@@ -9,11 +9,13 @@
 /var
 /vendor
 
+/.bash_history
 /.coveralls.yml
 /coverage.xml
 .docker
 .env
 composer.lock
+/.multisite
 /phpcs.xml.dist
 /phpstan.neon.dist
 

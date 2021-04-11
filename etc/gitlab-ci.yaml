@@ -1,0 +1,136 @@
+stages:
+  # first QA because if those basics things don't work
+  # then we don't waste more runtime for it.
+  - qa
+  - test
+  # The "compat" pipeline contains old things that may be dropped
+  # and new things that we try to achieve.
+  # We try to keep up backward compatibility
+  # (e.g. for deprecated PHP versions) as long as possible,
+  # because this package may be used by others to test old stuff.
+  #
+  #
+  # see https://www.php.net/supported-versions.php
+  # see https://www.php.net/eol.php
+  # see https://codex.wordpress.org/WordPress_Versions (hint: search for the current year)
+  # see https://phpunit.de/supported-versions.html
+  - compat
+
+variables:
+  COMPOSER_CACHE_DIR: /var/composer
+  PHP__memory_limit: 1024M
+  MYSQL_DATABASE: dev
+  MYSQL_USER: dev
+  MYSQL_PASSWORD: dev
+  MYSQL_ROOT_PASSWORD: dev
+  WP_VERSION: "5.7.*" # fallback
+  PHP_VERSION: "7.3" #
+
+cache:
+  key: global
+  paths:
+    - /var/composer
+
+.base: &base
+  before_script:
+    - composer require --dev --update-with-dependencies johnpbloch/wordpress:$WP_VERSION
+    - composer install # because downloading WP may have deleted plugins
+    - vendor/bin/wp --allow-root config create --skip-check --force > /dev/null
+    - vendor/bin/wp --allow-root core multisite-install --skip-email --skip-config > /dev/null
+    - touch .multisite # activate the MS part of wp-config.php (see wp-cli.yml)
+    - vendor/bin/wp --allow-root plugin activate --all --network
+    # prevent artifacts upload from failing
+    - touch srv/wp-content/debug.log phpunit-report.xml
+
+  artifacts:
+    when: always
+    expire_in: 30 days
+    expose_as: "CI"
+    reports:
+      junit: phpunit-report.xml
+    paths:
+      - composer.json
+
+  services:
+    - name: mariadb:10.5
+      alias: db
+
+test: &test
+  <<: *base
+  image: pretzlaw/php:${PHP_VERSION}-apache
+  script:
+    - phpdbg -qrr vendor/bin/phpunit
+      -c phpunit.xml.dist
+      --coverage-clover coverage.xml
+      --log-junit phpunit-report.xml
+  parallel:
+    matrix:
+    - PHP_VERSION: "7.3" # Until 6 Dec 2021
+      WP_VERSION: "4.7.*"
+
+    # PHP 7.4 is only supported by WP >=4.9
+    - PHP_VERSION: "7.4" # Until 28 Nov 2022
+      WP_VERSION: "4.9.*"
+
+    - PHP_VERSION: "7.4"
+      WP_VERSION: "5.1.*"
+
+    - PHP_VERSION: "7.4"
+      WP_VERSION: "5.3.*"
+
+    - PHP_VERSION: "7.4"
+      WP_VERSION: "5.5.*"
+
+    - PHP_VERSION: "7.4"
+      WP_VERSION: "5.7.*"
+#
+# Code quality
+#
+
+code quality:
+  <<: *base
+  stage: qa
+  image: pretzlaw/php:7.4-apache
+  script:
+    - echo 1
+
+#
+# Compatibility
+#
+.compat: &compat
+  <<: *test
+  stage: compat
+  needs: [test]
+
+deprecated:
+  <<: *compat
+  parallel:
+    matrix:
+      - PHP_VERSION: "7.1" # deprecated but we try keeping it up
+      - PHP_VERSION: "7.2" # deprecated but we try keeping it up
+
+upcoming:
+  <<: *compat
+  allow_failure: true
+  parallel:
+    matrix:
+      # must have
+      - PHP_VERSION: "8.0"
+        WP_VERSION: "5.7.*"
+      - PHP_VERSION: "8.0" # Until 28 Nov 2022
+        WP_VERSION: "5.5.*"
+      - WP_VERSION: "4.5.*"
+      # should have, because WP still supports it so we try this too
+      - PHP_VERSION: "7.0"
+      - PHP_VERSION: "5.6"
+      # Just curious, if it would fail with the upcoming WP version
+      - WP_VERSION: "dev-master"
+
+housekeeping:
+  <<: *base
+  stage: qa
+  allow_failure: true # we just want to be informed about this
+  script:
+    - composer validate --strict --no-check-lock
+    - composer outdated --direct
+    - test -z $(composer outdated --minor-only)

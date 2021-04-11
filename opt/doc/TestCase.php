@@ -186,6 +186,12 @@ class TestCase extends \PHPUnit\Framework\TestCase
             }
         }
 
+		error_log(
+			'TEST '
+			. get_class($this) . '::' . $this->getName()
+			. $this->getDataSetAsString()
+		);
+
         parent::tearDown();
     }
 }
