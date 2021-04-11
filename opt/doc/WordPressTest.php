@@ -63,6 +63,7 @@ class WordPressTest extends TestCase
     private $classMap = [
         'class-feed.php' => 'WP_Feed_Cache',
         'class-walker-page-dropdown.php' => 'Walker_PageDropdown',
+    	'class-phpmailer.php' => 'PHPMailer',
         'class-simplepie.php' => 'SimplePie',
         'class-wp-nav-menu-widget.php' => 'WP_Nav_Menu_Widget',
         'class-smtp.php' => 'SMTP',
@@ -164,6 +165,8 @@ class WordPressTest extends TestCase
      * * WP
      * * WP_Admin_Bar
      * * WP_Ajax_Response
+	 * * WP_Application_Passwords
+	 * * WP_Block
      * * WP_Block_*
      * * WP_Customize_*
      * * WP_Date_Query
@@ -191,6 +194,8 @@ class WordPressTest extends TestCase
      * * WP_Rewrite
      * * WP_Roles
      * * WP_Session_Tokens
+	 * * WP_Sitemaps
+	 * * WP_Sitemaps_*
      * * WP_SimplePie_File
      * * WP_SimplePie_Sanitize_KSES
      * * WP_Site_Query
