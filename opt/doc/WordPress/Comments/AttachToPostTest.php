@@ -113,7 +113,7 @@ class AttachToPostTest extends TestCase
 
         $this->fixtures()->persist($this->comment);
 
-        static::assertIsInt($this->comment->comment_ID);
+        static::assertIsString($this->comment->comment_ID);
 
         wp_cache_flush();
         $stored = get_comment($this->comment->comment_ID);

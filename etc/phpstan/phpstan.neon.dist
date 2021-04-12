@@ -1,0 +1,22 @@
+parameters:
+    level: 5
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    checkExplicitMixedMissingReturn: false
+    tipsOfTheDay: false
+    autoload_directories:
+        - ../../lib
+    autoload_files:
+        - ../../vendor/autoload.php
+        - ../../opt/doc/bootstrap.php
+    excludes_analyse:
+        - ../../lib/Test
+        - ../../lib/compat.php
+        - ../../lib/wp-cli.php
+        - ../../lib/bootstrap.php
+        - ../../lib/Repository/WooCommerce/ProductBundles/Bundles.php
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '# on an unknown class WP_CLI.#'
+        # WP_Comment::$comment_ID was int, became string for compat reasons
+        - '#Property WP_Comment::\$comment_ID .* does not accept string#'

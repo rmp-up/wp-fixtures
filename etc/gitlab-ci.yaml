@@ -33,6 +33,7 @@ cache:
 
 .base: &base
   before_script:
+    - rm -rf etc/phpstan # will be recovered, see "code quality"
     - composer require --dev --update-with-dependencies johnpbloch/wordpress:$WP_VERSION
     - composer install # because downloading WP may have deleted plugins
     - vendor/bin/wp --allow-root config create --skip-check --force > /dev/null
@@ -92,7 +93,11 @@ code quality:
   stage: qa
   image: pretzlaw/php:7.4-apache
   script:
-    - echo 1
+    # PHPStan does not run well in every environment
+    # This PHP and WP version seem find so we recover and run it only here
+    - git checkout etc/phpstan
+    - composer bin phpstan install
+    - vendor/bin/phpstan analyze -c etc/phpstan/phpstan.neon.dist lib/
 
 #
 # Compatibility
