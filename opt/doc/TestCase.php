@@ -102,7 +102,41 @@ class TestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
-    protected function loadEntities($index = 0, $entityName = null)
+	protected function isSiteInitialized(int $site_id): bool
+	{
+		if (function_exists('wp_is_site_initialized')) {
+			return wp_is_site_initialized($site_id);
+		}
+
+		global $wpdb;
+
+		if ( is_object( $site_id ) ) {
+			$site_id = $site_id->blog_id;
+		}
+		$site_id = (int) $site_id;
+
+		$switch = false;
+		if ( get_current_blog_id() !== $site_id ) {
+			$switch = true;
+			remove_action( 'switch_blog', 'wp_switch_roles_and_user', 1 );
+			switch_to_blog( $site_id );
+		}
+
+		$suppress = $wpdb->suppress_errors();
+		$result   = (bool) $wpdb->get_results( "DESCRIBE {$wpdb->posts}" );
+		$wpdb->suppress_errors( $suppress );
+
+		if ( $switch ) {
+			restore_current_blog();
+			if (function_exists('wp_switch_roles_and_user')) {
+				add_action( 'switch_blog', 'wp_switch_roles_and_user', 1, 2 );
+			}
+		}
+
+		return $result;
+	}
+
+	protected function loadEntities($index = 0, $entityName = null)
     {
         $data = $this->loadYaml($index);
 
