@@ -60,7 +60,7 @@ test: &test
   image: pretzlaw/php:${PHP_VERSION}-apache
   script:
     - phpdbg -qrr vendor/bin/phpunit
-      -c phpunit.xml.dist
+      -c etc/phpunit/phpunit.ci.xml
       --coverage-clover coverage.xml
       --log-junit phpunit-report.xml
   parallel:

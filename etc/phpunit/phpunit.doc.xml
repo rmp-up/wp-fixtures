@@ -28,7 +28,18 @@
         </whitelist>
     </filter>
 
-    <logging>
-        <log type="coverage-html" target="var/phpunit" lowUpperBound="50" highLowerBound="80"/>
-    </logging>
+    <listeners>
+        <listener class="Pretzlaw\PHPUnit\DocGen\TestCaseListener">
+            <arguments>
+                <string>var/documentation.md</string>
+            </arguments>
+        </listener>
+        <listener class="Pretzlaw\PHPUnit\DocGen\TestCaseListener">
+            <arguments>
+                <string>var/documentation.html</string>
+                <string>rmp-up/wp-fixtures - Expressive fixtures persistence in WordPress (and some plugins)</string>
+                <string>etc/documentation.css</string>
+            </arguments>
+        </listener>
+    </listeners>
 </phpunit>

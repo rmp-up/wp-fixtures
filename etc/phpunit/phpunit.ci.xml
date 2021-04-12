@@ -4,11 +4,11 @@
          colors="true"
          convertNoticesToExceptions="false"
          convertDeprecationsToExceptions="false"
-         bootstrap="opt/doc/bootstrap.php"
+         bootstrap="../../opt/doc/bootstrap.php"
 >
     <testsuites>
         <testsuite name="default">
-            <directory>opt/doc</directory>
+            <directory>../../opt/doc</directory>
         </testsuite>
     </testsuites>
 
@@ -18,17 +18,13 @@
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>lib/</directory>
+            <directory>../../lib/</directory>
             <exclude>
-                <directory>lib/Test</directory>
-                <file>lib/Cli/FixtureCommand.php</file>
-                <file>lib/compat.php</file>
-                <file>lib/wp-cli.php</file>
+                <directory>../../lib/Test</directory>
+                <file>../../lib/Cli/FixtureCommand.php</file>
+                <file>../../lib/compat.php</file>
+                <file>../../lib/wp-cli.php</file>
             </exclude>
         </whitelist>
     </filter>
-
-    <logging>
-        <log type="coverage-html" target="var/phpunit" lowUpperBound="50" highLowerBound="80"/>
-    </logging>
 </phpunit>

@@ -16,6 +16,7 @@
 .env
 composer.lock
 /.multisite
+/.phpunit.result.cache
 /phpcs.xml.dist
 /phpstan.neon.dist
 
