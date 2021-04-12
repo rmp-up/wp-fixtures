@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace RmpUp\WordPress\Fixtures\Test\WordPress;
 
 use RmpUp\WordPress\Fixtures\Test\TestCase;
-use Symfony\Component\Yaml\Yaml;
 use WP_Role;
 
 /**
@@ -69,7 +68,11 @@ class RolesTest extends TestCase
         unset($wp_roles);
         wp_cache_flush();
 
-        wp_roles()->for_site();
+        $roles = wp_roles();
+
+        if (method_exists($roles, 'for_site')) {
+        	$roles->for_site();
+		}
     }
 
     protected function setUp()
