@@ -79,7 +79,7 @@ class Posts extends AbstractRepository
 
         $success = wp_delete_post($id, true);
 
-        if (false === $success instanceof WP_Post) {
+        if (false === $success || $success->ID !== $id) {
             throw new RepositoryException(
                 $object,
                 sprintf('Could not delete post "%s" (ID %d)', $fixtureName, $id)
