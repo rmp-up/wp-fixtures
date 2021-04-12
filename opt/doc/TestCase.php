@@ -218,7 +218,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
             } catch (\Exception $e) {
 
             }
-        }
+		}
 
 		error_log(
 			'TEST '
@@ -226,6 +226,87 @@ class TestCase extends \PHPUnit\Framework\TestCase
 			. $this->getDataSetAsString()
 		);
 
-        parent::tearDown();
-    }
+		parent::tearDown();
+	}
+
+	/**
+	 * Backward compatible type-check
+	 *
+	 * @param $type
+	 * @param $other
+	 *
+	 * @return bool|void
+	 *
+	 * @deprecated This should be part of rmp-up/phpunit-compat
+	 */
+	protected static function assertIsType($type, $other)
+	{
+		$message = 'Value is not of type ' . $type;
+
+		switch ($type) {
+			case 'numeric':
+				static::assertTrue(\is_numeric($other), $message);
+				return;
+
+			case 'integer':
+			case 'int':
+				static::assertTrue(\is_int($other), $message);
+				return;
+
+			case 'double':
+			case 'float':
+			case 'real':
+				static::assertTrue(\is_float($other), $message);
+				return;
+
+			case 'string':
+				static::assertTrue(\is_string($other), $message);
+				return;
+
+			case 'boolean':
+			case 'bool':
+				static::assertTrue(\is_bool($other), $message);
+				return;
+
+			case 'null':
+				static::assertTrue(null === $other, $message);
+				return;
+
+			case 'array':
+				static::assertTrue(\is_array($other), $message);
+				return;
+
+			case 'object':
+				static::assertTrue(\is_object($other), $message);
+				return;
+
+			case 'resource':
+				static::assertTrue(\is_resource($other) || \is_string(@\get_resource_type($other)), $message);
+				return;
+
+			case 'scalar':
+				static::assertTrue(\is_scalar($other), $message);
+				return;
+
+			case 'callable':
+				static::assertTrue(\is_callable($other), $message);
+				return;
+		}
+	}
+
+	/**
+	 * Cross-PHP-Unit-Compatibility to check if string is in string.
+	 *
+	 * @param string $expected
+	 * @param string $other
+	 *
+	 * @deprecated Should be part of "rmp-up/phpunit-compat"-package instead.
+	 */
+	protected static function assertStringInString($expected, $other)
+	{
+		static::assertNotFalse(
+			strpos($other, $expected),
+			sprintf('Could not find "%s" in "%s".', $expected, $other)
+		);
+	}
 }

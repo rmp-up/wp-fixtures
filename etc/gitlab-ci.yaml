@@ -23,8 +23,8 @@ variables:
   MYSQL_USER: dev
   MYSQL_PASSWORD: dev
   MYSQL_ROOT_PASSWORD: dev
-  WP_VERSION: "5.7.*" # fallback
-  PHP_VERSION: "7.3" #
+  WP_VERSION: "5.7.*" # in doubt use the latest
+  PHP_VERSION: "7.3"
 
 cache:
   key: global
@@ -67,7 +67,7 @@ test: &test
   parallel:
     matrix:
     - PHP_VERSION: "7.3" # Until 6 Dec 2021
-      WP_VERSION: "4.7.*"
+      WP_VERSION: "4.8.*"
 
     # PHP 7.4 is only supported by WP >=4.9
     - PHP_VERSION: "7.4" # Until 28 Nov 2022
@@ -111,8 +111,19 @@ deprecated:
   <<: *compat
   parallel:
     matrix:
-      - PHP_VERSION: "7.1" # deprecated but we try keeping it up
-      - PHP_VERSION: "7.2" # deprecated but we try keeping it up
+      # Deprecated PHP versions but we try keeping it up
+      # Testing only the WP edges (low/high versions) should cover enough
+      - PHP_VERSION: "7.0"
+      - PHP_VERSION: "7.0"
+        WP_VERSION: "4.7.*"
+
+      - PHP_VERSION: "7.1"
+      - PHP_VERSION: "7.1"
+        WP_VERSION: "4.7.*"
+
+      - PHP_VERSION: "7.2"
+      - PHP_VERSION: "7.2"
+        WP_VERSION: "4.7.*"
 
 upcoming:
   <<: *compat
@@ -126,7 +137,6 @@ upcoming:
         WP_VERSION: "5.5.*"
       - WP_VERSION: "4.5.*"
       # should have, because WP still supports it so we try this too
-      - PHP_VERSION: "7.0"
       - PHP_VERSION: "5.6"
       # Just curious, if it would fail with the upcoming WP version
       - WP_VERSION: "dev-master"

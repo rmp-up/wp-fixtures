@@ -1,5 +1,5 @@
 ![](https://img.shields.io/badge/PHP-7.0%20--%207.4-blue?style=for-the-badge&logo=php)
-![](https://img.shields.io/badge/WordPress-4.6%20--%205.7-blue?style=for-the-badge&logo=wordpress)
+![](https://img.shields.io/badge/WordPress-4.7%20--%205.7-blue?style=for-the-badge&logo=wordpress)
 
 [![Build Status](https://gitlab.com/rmp-up1/wp-fixtures/badges/release/0.8/pipeline.svg)](https://gitlab.com/rmp-up1/wp-fixtures)
 [![Coverage Status](https://coveralls.io/repos/github/rmp-up/wp-fixtures/badge.svg)](https://coveralls.io/github/rmp-up/wp-fixtures)

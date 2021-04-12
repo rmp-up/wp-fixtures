@@ -87,7 +87,7 @@ class CreatingSitesTest extends TestCase
 
             self::assertNotNull($site->blog_id);
             self::assertTrue($this->isSiteInitialized((int) $site->blog_id));
-            static::assertIsInt(domain_exists($site->domain, $site->path));
+            static::assertIsType('int', domain_exists($site->domain, $site->path));
         }
     }
 }

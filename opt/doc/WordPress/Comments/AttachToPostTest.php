@@ -95,7 +95,7 @@ class AttachToPostTest extends TestCase
     {
         $this->fixtures()->persist($this->post);
         $this->fixtures()->persist($this->comment);
-        static::assertIsInt($this->post->ID);
+        static::assertIsType('int', $this->post->ID);
 
         wp_cache_flush();
         $stored = get_comments(['post_id' => $this->post->ID]);
@@ -107,13 +107,13 @@ class AttachToPostTest extends TestCase
     {
         $this->fixtures()->persist($this->post);
 
-        static::assertIsInt($this->post->ID);
+        static::assertIsType('int', $this->post->ID);
 
         static::assertNull($this->comment->comment_ID);
 
         $this->fixtures()->persist($this->comment);
 
-        static::assertIsString($this->comment->comment_ID);
+        static::assertIsType('string', $this->comment->comment_ID);
 
         wp_cache_flush();
         $stored = get_comment($this->comment->comment_ID);

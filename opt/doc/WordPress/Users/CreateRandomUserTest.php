@@ -49,7 +49,7 @@ class CreateRandomUserTest extends TestCase
         $user = $this->fixtures['a_thing_with_a_user']->user;
 
         static::assertInstanceOf(WP_User::class, $user);
-        static::assertStringContainsString('wp_fixture_user', $user->user_login);
+        static::assertStringInString('wp_fixture_user', $user->user_login);
         static::assertEquals(32, strlen($user->user_pass));
         static::assertEquals($user->user_email, is_email($user->user_email));
     }
