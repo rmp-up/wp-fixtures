@@ -60,9 +60,9 @@ class AttachToPostTest extends TestCase
      */
     private $post;
 
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         $this->fixtures = $this->loadEntities();
 

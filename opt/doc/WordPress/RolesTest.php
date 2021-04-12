@@ -75,9 +75,9 @@ class RolesTest extends TestCase
 		}
     }
 
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         $this->participant = $this->loadEntities(0, 'participant');
 

@@ -32,6 +32,8 @@ cache:
     - /var/composer
 
 .base: &base
+  image: pretzlaw/php:${PHP_VERSION}-apache
+
   before_script:
     - rm -rf etc/phpstan # will be recovered, see "code quality"
     - composer require --dev --update-with-dependencies johnpbloch/wordpress:$WP_VERSION
@@ -40,8 +42,8 @@ cache:
     - vendor/bin/wp --allow-root core multisite-install --skip-email --skip-config > /dev/null
     - touch .multisite # activate the MS part of wp-config.php (see wp-cli.yml)
     - vendor/bin/wp --allow-root plugin activate --all --network
-    # prevent artifacts upload from failing
-    - touch srv/wp-content/debug.log phpunit-report.xml
+    # prevent artifacts upload from failing (and clean them up)
+    - truncate -s0 srv/wp-content/debug.log phpunit-report.xml
 
   artifacts:
     when: always
@@ -51,6 +53,7 @@ cache:
       junit: phpunit-report.xml
     paths:
       - composer.json
+      - srv/wp-content/debug.log
 
   services:
     - name: mariadb:10.5
@@ -58,7 +61,6 @@ cache:
 
 test: &test
   <<: *base
-  image: pretzlaw/php:${PHP_VERSION}-apache
   script:
     - phpdbg -qrr vendor/bin/phpunit
       -c etc/phpunit/phpunit.ci.xml
@@ -84,6 +86,27 @@ test: &test
 
     - PHP_VERSION: "7.4"
       WP_VERSION: "5.7.*"
+
+#
+# Anomalous setups
+#
+# Some environments require a special hands on,
+# for example when packages break their Semantiv Versioning,
+# Backward Compatibility promise or something else.
+# Special cases go here to keep the common flow clean (as defined above).
+#
+aberrations:
+  <<: *test
+  before_script:
+    - !reference [.base, before_script]
+    - composer bin wp update --ignore-platform-reqs # WP-CLI messed up for PHP8
+  parallel:
+    matrix:
+      - PHP_VERSION: "8.0" # Until 28 Nov 2022
+        WP_VERSION: "5.1"
+      - PHP_VERSION: "8.0"
+        WP_VERSION: "5.7"
+
 #
 # Code quality
 #
@@ -131,10 +154,6 @@ upcoming:
   parallel:
     matrix:
       # must have
-      - PHP_VERSION: "8.0"
-        WP_VERSION: "5.7.*"
-      - PHP_VERSION: "8.0" # Until 28 Nov 2022
-        WP_VERSION: "5.5.*"
       - WP_VERSION: "4.5.*"
       # should have, because WP still supports it so we try this too
       - PHP_VERSION: "5.6"

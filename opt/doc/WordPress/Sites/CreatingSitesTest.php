@@ -50,9 +50,9 @@ class CreatingSitesTest extends TestCase
      */
     protected $sites;
 
-	public function setUp()
+	public function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         $this->sites = $this->loadEntities();
 
@@ -63,7 +63,7 @@ class CreatingSitesTest extends TestCase
         }
     }
 
-    protected function tearDown()
+    protected function compatTearDown()
     {
         foreach ($this->sites as $site) {
             // Perhaps deleted during some test?
@@ -72,7 +72,7 @@ class CreatingSitesTest extends TestCase
             }
         }
 
-        parent::tearDown();
+        parent::compatTearDown();
     }
 
     public function testAllSitesInitialized()

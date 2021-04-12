@@ -37,7 +37,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @copyright 2020 Pretzlaw (https://rmp-up.de)
  */
-class TestCase extends \PHPUnit\Framework\TestCase
+class TestCase extends \RmpUp\PHPUnitCompat\TestCase
 {
     use DocParser;
     use FixturesTrait;
@@ -197,9 +197,9 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $this->repository;
     }
 
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         // Always load the very first example
         $entities = $this->loadEntities();
@@ -210,7 +210,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
-    protected function tearDown()
+    protected function compatTearDown()
     {
         if (false === empty($this->fixtures)) {
             try {
@@ -226,7 +226,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
 			. $this->getDataSetAsString()
 		);
 
-		parent::tearDown();
+		parent::compatTearDown();
 	}
 
 	/**

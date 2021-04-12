@@ -16,7 +16,7 @@
     }
   },
   "require": {
-    "php": "~7.0",
+    "php": "~7.0|8.0.*",
     "nelmio/alice": "~2|~3",
     "fzaninotto/faker": "~1"
   },
@@ -24,11 +24,6 @@
     "bamarni/composer-bin-plugin": "1.4.*",
     "johnpbloch/wordpress": "5.7.*",
     "squizlabs/php_codesniffer": "~3",
-    "wp-cli/config-command": "~2",
-    "wp-cli/core-command": "~2",
-    "wp-cli/db-command": "~2",
-    "wp-cli/extension-command": "~2",
-    "wp-cli/wp-cli": "~2",
     "wpackagist-plugin/woocommerce": "3.*",
     "wpackagist-plugin/yith-woocommerce-product-bundles": "1.1.*"
   },

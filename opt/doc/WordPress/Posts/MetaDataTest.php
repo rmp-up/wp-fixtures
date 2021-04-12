@@ -62,9 +62,9 @@ class MetaDataTest extends TestCase
         );
     }
 
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         $this->tenSpeed = $this->loadEntities(0, 'ten_speed');
         static::assertInstanceOf(WP_Post::class, $this->tenSpeed);

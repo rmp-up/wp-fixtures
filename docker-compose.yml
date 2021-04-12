@@ -39,6 +39,13 @@ services:
       default:
         ipv4_address: 10.211.3.74
 
+  php80:
+    <<: *php
+    image: pretzlaw/php:8.0-apache
+    networks:
+      default:
+        ipv4_address: 10.211.3.80
+
   db:
     image: mysql:5.7
     volumes:
