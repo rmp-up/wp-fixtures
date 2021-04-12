@@ -26,6 +26,7 @@ namespace RmpUp\WordPress\Fixtures\Cli;
 use Exception;
 use Nelmio\Alice\FileLoaderInterface;
 use RmpUp\WordPress\Fixtures\Faker\WordPressFixtureLoader;
+use RmpUp\WordPress\Fixtures\Helper\WpCompat;
 use RmpUp\WordPress\Fixtures\Repository\RepositoryInterface;
 use RmpUp\WordPress\Fixtures\RepositoryFacade;
 use RmpUp\WordPress\Fixtures\RepositoryFactory;
@@ -89,6 +90,8 @@ class FixtureCommand
      */
     public function __invoke($yamlFiles, $options)
     {
+		WpCompat::check();
+
         $this->force = $options['force'] ?? false;
 
         add_filter('user_has_cap', [$this, 'enableAllCapabilities'], 10, 2);
@@ -133,7 +136,7 @@ class FixtureCommand
         }
     }
 
-    public function enableAllCapabilities($capabilities, $caps)
+	public function enableAllCapabilities($capabilities, $caps)
     {
         foreach ($caps as $cap) {
             // allow all.
