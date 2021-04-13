@@ -2,7 +2,15 @@
 
 const MY_PLUGIN_DIR = __DIR__;
 
-require_once __DIR__ . '/../../vendor/pretzlaw/wp-integration-test/bootstrap.php';
+$_SERVER['HTTP_HOST'] = '10.211.3.71'; // DOMAIN_CURRENT_SITE in wp-config.php
+
+define('_BASE_DIR', dirname(__DIR__, 2));
+putenv('WP_DIR=' . _BASE_DIR . '/srv');
+
+require_once _BASE_DIR . '/vendor/autoload.php';
+require_once _BASE_DIR . '/etc/wp/vendor/autoload.php';
+require_once _BASE_DIR . '/etc/phpunit/vendor/autoload.php';
+require_once _BASE_DIR . '/etc/phpunit/vendor/pretzlaw/wp-integration-test/bootstrap.php';
 
 class Mirror extends \stdClass {}
 

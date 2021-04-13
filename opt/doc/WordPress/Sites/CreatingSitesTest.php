@@ -50,9 +50,9 @@ class CreatingSitesTest extends TestCase
      */
     protected $sites;
 
-    public function setUp()
+	public function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         $this->sites = $this->loadEntities();
 
@@ -63,16 +63,16 @@ class CreatingSitesTest extends TestCase
         }
     }
 
-    protected function tearDown()
+    protected function compatTearDown()
     {
         foreach ($this->sites as $site) {
             // Perhaps deleted during some test?
-            if (domain_exists($site->domain, $site->path) || wp_is_site_initialized((int) $site->blog_id)) {
+            if (domain_exists($site->domain, $site->path) || $this->isSiteInitialized((int) $site->blog_id)) {
                 $this->fixtures()->delete($site, '');
             }
         }
 
-        parent::tearDown();
+        parent::compatTearDown();
     }
 
     public function testAllSitesInitialized()
@@ -86,8 +86,8 @@ class CreatingSitesTest extends TestCase
             $this->fixtures()->persist($site, (string) $site->siteurl);
 
             self::assertNotNull($site->blog_id);
-            self::assertTrue(wp_is_site_initialized($site->blog_id));
-            static::assertIsInt(domain_exists($site->domain, $site->path));
+            self::assertTrue($this->isSiteInitialized((int) $site->blog_id));
+            static::assertIsType('int', domain_exists($site->domain, $site->path));
         }
     }
 }

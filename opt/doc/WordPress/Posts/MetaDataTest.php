@@ -22,12 +22,73 @@ declare(strict_types=1);
 
 namespace RmpUp\WordPress\Fixtures\Test\WordPress\Posts;
 
+use RmpUp\WordPress\Fixtures\Test\TestCase;
+use WP_Post;
+
 /**
- * MetaDataTest
+ * Meta-Data
+ *
+ * To insert Meta-Data you can add `meta_input` field as follows:
+ *
+ * ```yaml
+ * WP_Post:
+ *   # Common way
+ *   ten_speed:
+ *     content: <text()>
+ *     meta_input:
+ *       hello: Drop its O
+ *       left: in a sudden rush
+ *       goodbyes: 0
+ * ```
  *
  * @copyright 2020 Pretzlaw (https://rmp-up.de)
  */
-class MetaDataTest
+class MetaDataTest extends TestCase
 {
+    /**
+     * @var WP_Post
+     */
+    private $tenSpeed;
 
+    public function testWpPostWithMetaDataCreated()
+    {
+        static::assertEquals(
+            [
+                'hello' => 'Drop its O',
+                'left' => 'in a sudden rush',
+                'goodbyes' => 0,
+            ],
+            $this->tenSpeed->meta_input
+        );
+    }
+
+    protected function compatSetUp()
+    {
+        parent::compatSetUp();
+
+        $this->tenSpeed = $this->loadEntities(0, 'ten_speed');
+        static::assertInstanceOf(WP_Post::class, $this->tenSpeed);
+
+        $currentId = $this->fixtures()->find($this->tenSpeed);
+
+        if ($currentId) {
+            wp_delete_post($currentId, true);
+        }
+    }
+
+    public function testWpMetaPersists()
+    {
+        $this->fixtures()->persist($this->tenSpeed);
+
+        wp_cache_flush();
+
+        static::assertArraySubset(
+            [
+                'hello' => ['Drop its O'],
+                'left' => ['in a sudden rush'],
+                'goodbyes' => [0],
+            ],
+            get_post_meta($this->tenSpeed->ID)
+        );
+    }
 }

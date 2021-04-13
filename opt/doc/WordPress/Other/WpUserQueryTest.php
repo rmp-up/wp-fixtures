@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * CreateRandomUserTest.php
+ * WpUserQueryTest.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,37 +20,38 @@
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Test\WordPress\Users;
+namespace RmpUp\WordPress\Fixtures\Test\WordPress\Other;
 
 use RmpUp\WordPress\Fixtures\Test\TestCase;
-use WP_User;
+use WP_User_Query;
 
 /**
- * Create random user
+ * WP_User_Query
  *
- * Whenever you need a random user you can use the `WP_User()` provider:
+ * The user query finds and loads multiple users from the database.
+ * If you develop a plugin to optimize or change such queries
+ * you surely want to have a big bunch of test scenarios like this:
  *
  * ```yaml
- * SomeThing:
- *   a_thing_with_a_user:
- *     thingy: dingy
- *     user: <WP_User()>
+ * WP_User_Query:
+ *   some_user_query_{1..10}:
+ *     query_vars:
+ *       has_published_posts: 0
+ *       search: <word()>
  * ```
  *
- * This will attach a random `WP_User` to the user field.
+ * This will give you 10 queries searching for some random word
+ * among all user without a published post.
  *
  * @copyright 2020 Pretzlaw (https://rmp-up.de)
  */
-class CreateRandomUserTest extends TestCase
+class WpUserQueryTest extends TestCase
 {
-    public function testRandomUserIsCreated()
+    public function testGetUserQueries()
     {
-        /** @var WP_User $user */
-        $user = $this->fixtures['a_thing_with_a_user']->user;
+        /** @var WP_User_Query $query */
+        $query = $this->fixtures['some_user_query_1'];
 
-        static::assertInstanceOf(WP_User::class, $user);
-        static::assertStringInString('wp_fixture_user', $user->user_login);
-        static::assertEquals(32, strlen($user->user_pass));
-        static::assertEquals($user->user_email, is_email($user->user_email));
+        self::assertInstanceOf(WP_User_Query::class, $query);
     }
 }

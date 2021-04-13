@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * CreateRandomUserTest.php
+ * OtherTest.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,37 +20,24 @@
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Test\WordPress\Users;
+namespace RmpUp\WordPress\Fixtures\Test\WordPress;
 
 use RmpUp\WordPress\Fixtures\Test\TestCase;
-use WP_User;
 
 /**
- * Create random user
+ * Other
  *
- * Whenever you need a random user you can use the `WP_User()` provider:
- *
- * ```yaml
- * SomeThing:
- *   a_thing_with_a_user:
- *     thingy: dingy
- *     user: <WP_User()>
- * ```
- *
- * This will attach a random `WP_User` to the user field.
+ * There are more entities that can be created
+ * but not persisted so far.
+ * Either because it is not yet implemented
+ * or because WordPress just uses these classes internally.
  *
  * @copyright 2020 Pretzlaw (https://rmp-up.de)
  */
-class CreateRandomUserTest extends TestCase
+class OtherTest extends TestCase
 {
-    public function testRandomUserIsCreated()
+    public function testOther()
     {
-        /** @var WP_User $user */
-        $user = $this->fixtures['a_thing_with_a_user']->user;
-
-        static::assertInstanceOf(WP_User::class, $user);
-        static::assertStringInString('wp_fixture_user', $user->user_login);
-        static::assertEquals(32, strlen($user->user_pass));
-        static::assertEquals($user->user_email, is_email($user->user_email));
+        static::assertTrue(true);
     }
 }

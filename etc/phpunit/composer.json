@@ -1,0 +1,9 @@
+{
+  "require": {
+    "phpunit/phpunit": "~6|~7|~8|~9",
+    "pretzlaw/wp-integration-test": "0.4.*",
+    "rmp-up/phpunit-compat": "0.1.3",
+    "rmp-up/doc-parser": "0.2.0",
+    "symfony/finder": "~3|~4"
+  }
+}

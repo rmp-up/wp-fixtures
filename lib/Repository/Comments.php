@@ -42,7 +42,7 @@ class Comments implements RepositoryInterface
             return;
         }
 
-        wp_delete_comment($object->comment_ID, true);
+        wp_delete_comment((int) $object->comment_ID, true);
     }
 
     /**
@@ -54,7 +54,7 @@ class Comments implements RepositoryInterface
     public function find($object, string $fixtureName = null)
     {
         if ($object->comment_ID) {
-            return $object->comment_ID;
+            return (int) $object->comment_ID;
         }
 
         $commentQuery = [
@@ -70,7 +70,7 @@ class Comments implements RepositoryInterface
         $comments = (array) get_comments($commentQuery);
 
         if (count($comments) === 1) {
-            return $comments[0];
+            return (int) $comments[0];
         }
 
         foreach ($comments as $commentId) {
@@ -78,7 +78,7 @@ class Comments implements RepositoryInterface
             $found = get_comment($commentId);
 
             if ($found->comment_content === $object->comment_content) {
-                return $found->comment_ID;
+                return (int) $found->comment_ID;
             }
         }
 
@@ -99,7 +99,7 @@ class Comments implements RepositoryInterface
             throw new PersistException($object, 'Could not store comment ' . $fixtureName);
         }
 
-        $object->comment_ID = $commentId;
+        $object->comment_ID = (string) $commentId;
 
         return $commentId;
     }

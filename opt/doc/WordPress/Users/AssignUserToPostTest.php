@@ -56,9 +56,9 @@ class AssignUserToPostTest extends TestCase
      */
     private $user;
 
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         $this->post = $this->fixtures['post_with_a_user'];
         $this->user = $this->fixtures['some_user_for_post'];

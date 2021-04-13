@@ -1,0 +1,177 @@
+stages:
+  # first QA because if those basics things don't work
+  # then we don't waste more runtime for it.
+  - qa
+  - test
+  # The "compat" pipeline contains old things that may be dropped
+  # and new things that we try to achieve.
+  # We try to keep up backward compatibility
+  # (e.g. for deprecated PHP versions) as long as possible,
+  # because this package may be used by others to test old stuff.
+  #
+  #
+  # see https://www.php.net/supported-versions.php
+  # see https://www.php.net/eol.php
+  # see https://codex.wordpress.org/WordPress_Versions (hint: search for the current year)
+  # see https://phpunit.de/supported-versions.html
+  - compat
+
+variables:
+  COMPOSER_CACHE_DIR: /var/composer
+  PHP__memory_limit: 1024M
+  MYSQL_DATABASE: dev
+  MYSQL_USER: dev
+  MYSQL_PASSWORD: dev
+  MYSQL_ROOT_PASSWORD: dev
+  WP_VERSION: "5.7.*" # in doubt use the latest
+  PHP_VERSION: "7.3"
+
+cache:
+  key: global
+  paths:
+    - /var/composer
+
+.base: &base
+  image: pretzlaw/php:${PHP_VERSION}-apache
+
+  before_script:
+    - rm -rf etc/phpstan # will be recovered, see "code quality"
+    - composer require --dev --update-with-dependencies johnpbloch/wordpress:$WP_VERSION
+    - composer install # because downloading WP may have deleted plugins
+    - vendor/bin/wp --allow-root config create --skip-check --force
+    - vendor/bin/wp --allow-root core multisite-install --skip-email --skip-config
+    - touch .multisite # activate the MS part of wp-config.php (see wp-cli.yml)
+    - vendor/bin/wp --allow-root plugin activate --all --network
+    # prevent artifacts upload from failing (and clean them up)
+    - truncate -s0 srv/wp-content/debug.log phpunit-report.xml
+
+  artifacts:
+    when: always
+    expire_in: 30 days
+    expose_as: "CI"
+    reports:
+      junit: phpunit-report.xml
+    paths:
+      - composer.json
+      - srv/wp-content/debug.log
+
+  services:
+    - name: mariadb:10.5
+      alias: db
+
+test: &test
+  <<: *base
+  script:
+    - phpdbg -qrr vendor/bin/phpunit
+      -c etc/phpunit/phpunit.ci.xml
+      --coverage-clover coverage.xml
+      --log-junit phpunit-report.xml
+  parallel:
+    matrix:
+    - PHP_VERSION: "7.3" # Until 6 Dec 2021
+      WP_VERSION: "4.8.*"
+
+    # PHP 7.4 is only supported by WP >=4.9
+    - PHP_VERSION: "7.4" # Until 28 Nov 2022
+      WP_VERSION: "4.9.*"
+
+    - PHP_VERSION: "7.4"
+      WP_VERSION: "5.1.*"
+
+    - PHP_VERSION: "7.4"
+      WP_VERSION: "5.3.*"
+
+    - PHP_VERSION: "7.4"
+      WP_VERSION: "5.5.*"
+
+    - PHP_VERSION: "7.4"
+      WP_VERSION: "5.7.*"
+
+#
+# Anomalous setups
+#
+# Some environments require a special hands on,
+# for example when packages break their Semantiv Versioning,
+# Backward Compatibility promise or something else.
+# Special cases go here to keep the common flow clean (as defined above).
+#
+aberrations:
+  <<: *test
+  before_script:
+    # WP-CLI defined versions as PHP8 compatible that actually aren't.
+    # Fortunately version 2.4.1 (not marked as compatible) is compatible.
+    - cd etc/wp;
+      composer config platform.php 7.4.1;
+      composer require wp-cli/wp-cli:2.4.1;
+      cd ../..
+    - !reference [.base, before_script]
+  parallel:
+    matrix:
+      - PHP_VERSION: "8.0" # Until 28 Nov 2022
+        WP_VERSION: "5.5.*"
+        # Note: lower WP versions require johnpbloch/wordpress-core-installer:1
+        #       which is incompatible with Composer 2
+      - PHP_VERSION: "8.0"
+        WP_VERSION: "5.7.*"
+
+#
+# Code quality
+#
+
+code quality:
+  <<: *base
+  stage: qa
+  image: pretzlaw/php:7.4-apache
+  script:
+    # PHPStan does not run well in every environment
+    # This PHP and WP version seem find so we recover and run it only here
+    - git checkout etc/phpstan
+    - composer bin phpstan install
+    - vendor/bin/phpstan analyze -c etc/phpstan/phpstan.neon.dist lib/
+
+#
+# Compatibility
+#
+.compat: &compat
+  <<: *test
+  stage: compat
+  needs: [test]
+
+deprecated:
+  <<: *compat
+  parallel:
+    matrix:
+      # Deprecated PHP versions but we try keeping it up
+      # Testing only the WP edges (low/high versions) should cover enough
+      - PHP_VERSION: "7.0"
+      - PHP_VERSION: "7.0"
+        WP_VERSION: "4.7.*"
+
+      - PHP_VERSION: "7.1"
+      - PHP_VERSION: "7.1"
+        WP_VERSION: "4.7.*"
+
+      - PHP_VERSION: "7.2"
+      - PHP_VERSION: "7.2"
+        WP_VERSION: "4.7.*"
+
+upcoming:
+  <<: *compat
+  allow_failure: true
+  parallel:
+    matrix:
+      # must have
+      - WP_VERSION: "4.5.*"
+      # should have, because WP still supports it so we try this too
+      - PHP_VERSION: "5.6"
+      # Just curious, if it would fail with the upcoming WP version
+      - WP_VERSION: "dev-master"
+
+housekeeping:
+  <<: *base
+  stage: qa
+  allow_failure: true # we just want to be informed about this
+  script:
+    - composer validate --strict --no-check-lock
+    - composer outdated --direct
+    - test -z $(composer outdated --minor-only)

@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * CreateRandomUserTest.php
+ * WpCommentQueryTest.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,37 +20,41 @@
 
 declare(strict_types=1);
 
-namespace RmpUp\WordPress\Fixtures\Test\WordPress\Users;
+namespace RmpUp\WordPress\Fixtures\Test\WordPress\Other;
 
 use RmpUp\WordPress\Fixtures\Test\TestCase;
-use WP_User;
+use WP_Comment_Query;
+use WP_Date_Query;
 
 /**
- * Create random user
+ * WP_Comment_Query
  *
- * Whenever you need a random user you can use the `WP_User()` provider:
+ * The comment query finds and loads multiple comments from the database.
+ * If you develop a plugin to optimize or change such queries
+ * you surely want to have a big bunch of test scenarios like this:
  *
  * ```yaml
- * SomeThing:
- *   a_thing_with_a_user:
- *     thingy: dingy
- *     user: <WP_User()>
+ * WP_Comment_Query:
+ *   some_comment_query_{1..10}:
+ *     query_vars:
+ *       include_unapproved: 1
+ *       search: <word()>
+ *       date_query:
+ *         after: 4 weeks ago
  * ```
  *
- * This will attach a random `WP_User` to the user field.
+ * This will give you 10 comment queries searching for some random word
+ * in all unapproved comments.
  *
  * @copyright 2020 Pretzlaw (https://rmp-up.de)
  */
-class CreateRandomUserTest extends TestCase
+class WpCommentQueryTest extends TestCase
 {
-    public function testRandomUserIsCreated()
+    public function testGetComments()
     {
-        /** @var WP_User $user */
-        $user = $this->fixtures['a_thing_with_a_user']->user;
+        /** @var WP_Comment_Query $query */
+        $query = $this->fixtures['some_comment_query_1'];
 
-        static::assertInstanceOf(WP_User::class, $user);
-        static::assertStringInString('wp_fixture_user', $user->user_login);
-        static::assertEquals(32, strlen($user->user_pass));
-        static::assertEquals($user->user_email, is_email($user->user_email));
+        self::assertInstanceOf(WP_Comment_Query::class, $query);
     }
 }

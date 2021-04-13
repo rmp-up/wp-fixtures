@@ -76,8 +76,11 @@ class BypassConstructorInstantiator extends AbstractChainableInstantiator
     {
         $instance = (new ReflectionClass($fixture->getClassName()))->newInstanceWithoutConstructor();
 
-        if (is_callable($this->classNames[$fixture->getClassName()])) {
-            $this->classNames[$fixture->getClassName()]($instance);
+        $instanceCreator = (array) $this->classNames[$fixture->getClassName()];
+        foreach ($instanceCreator as $creator) {
+            if (is_callable($creator)) {
+                $creator($instance);
+            }
         }
 
         return $instance;

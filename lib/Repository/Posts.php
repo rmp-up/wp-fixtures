@@ -46,6 +46,12 @@ class Posts extends AbstractRepository
             $tempTax = $this->temporaryTaxonomy(array_keys($double->tax_input));
         }
 
+        if (!empty($double->ID) && empty(get_post($double->ID))) {
+            global $wpdb;
+
+            $wpdb->insert($wpdb->posts, ['ID' => $double->ID]);
+        }
+
         $postId = wp_insert_post($this->toArray($double), true);
 
         if ($tempTax) {
@@ -73,7 +79,7 @@ class Posts extends AbstractRepository
 
         $success = wp_delete_post($id, true);
 
-        if (false === $success instanceof WP_Post) {
+        if (false === $success || $success->ID !== $id) {
             throw new RepositoryException(
                 $object,
                 sprintf('Could not delete post "%s" (ID %d)', $fixtureName, $id)
@@ -89,11 +95,6 @@ class Posts extends AbstractRepository
      */
     public function find($object, string $fixtureName = null)
     {
-        // By ID
-        if (!empty($object->ID)) {
-            return $object->ID;
-        }
-
         $found = null;
 
         // By title

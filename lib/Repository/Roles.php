@@ -38,14 +38,11 @@ class Roles extends AbstractRepository
      */
     protected function create($object): int
     {
-        $current = $this->getCurrentValue();
-
-        $current[$object->name] = [
-            'name' => $object->name,
-            'capabilities' => $object->capabilities,
-        ];
-
-        $this->updateValue($current);
+		wp_roles()->add_role(
+			$object->name,
+			$object->name,
+			$object->capabilities
+		);
 
         return 0;
     }
@@ -56,14 +53,7 @@ class Roles extends AbstractRepository
      */
     public function delete($object, string $fixtureName)
     {
-        $current = $this->getCurrentValue();
-
-        if (false === array_key_exists($object->name, $current)) {
-            return;
-        }
-
-        unset($current[$object->name]);
-        $this->updateValue($current);
+    	wp_roles()->remove_role($object->name);
     }
 
     /**
@@ -101,6 +91,11 @@ class Roles extends AbstractRepository
 
     private function getOptionName(): string
     {
+    	$roles = wp_roles();
+    	if ($roles instanceof \WP_Roles) {
+    		return $roles->role_key;
+		}
+
         return $this->db->get_blog_prefix(get_current_blog_id()) . 'user_roles';
     }
 

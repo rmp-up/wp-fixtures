@@ -56,9 +56,9 @@ use RmpUp\WordPress\Fixtures\Test\TestCase;
  */
 class OptionsTest extends TestCase
 {
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         update_option('active_plugins', []);
     }

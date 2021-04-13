@@ -47,9 +47,9 @@ use WP_Term;
  */
 class AssignTermsToPostTest extends TestCase
 {
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         register_taxonomy('package', 'post');
     }
@@ -72,10 +72,10 @@ class AssignTermsToPostTest extends TestCase
         static::assertCount(1, $terms);
     }
 
-    protected function tearDown()
+    protected function compatTearDown()
     {
         unregister_taxonomy('package');
 
-        parent::tearDown();
+        parent::compatTearDown();
     }
 }

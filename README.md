@@ -1,4 +1,7 @@
-[![Build Status](https://travis-ci.org/rmp-up/wp-fixtures.svg?branch=master)](https://travis-ci.org/rmp-up/wp-fixtures)
+![](https://img.shields.io/badge/PHP-7.0%20--%207.4-blue?style=for-the-badge&logo=php)
+![](https://img.shields.io/badge/WordPress-4.7%20--%205.7-blue?style=for-the-badge&logo=wordpress)
+
+[![Build Status](https://gitlab.com/rmp-up1/wp-fixtures/badges/release/0.8/pipeline.svg)](https://gitlab.com/rmp-up1/wp-fixtures)
 [![Coverage Status](https://coveralls.io/repos/github/rmp-up/wp-fixtures/badge.svg)](https://coveralls.io/github/rmp-up/wp-fixtures)
 
 # WordPress Fixture Generator
@@ -22,7 +25,7 @@ reinventing the wheel.
 
 By now we bring helper for:
 
-* **WordPress** 4.6 - 5.4, e.g. posts, pages, user, options etc.
+* **WordPress**, e.g. posts, pages, user, options etc.
 
 See below how a small Yaml-File can seed the database with tons of entries
 or [read the documentation](https://github.com/rmp-up/wp-fixtures/releases)
