@@ -23,14 +23,16 @@ declare(strict_types=1);
 
 namespace RmpUp\WordPress\Fixtures\Cli;
 
-use Exception;
 use Nelmio\Alice\FileLoaderInterface;
 use RmpUp\WordPress\Fixtures\Faker\WordPressFixtureLoader;
+use RmpUp\WordPress\Fixtures\Helper\Finder;
+use RmpUp\WordPress\Fixtures\Helper\FinderInterface;
 use RmpUp\WordPress\Fixtures\Helper\WpCompat;
 use RmpUp\WordPress\Fixtures\Repository\RepositoryInterface;
 use RmpUp\WordPress\Fixtures\RepositoryFacade;
 use RmpUp\WordPress\Fixtures\RepositoryFactory;
 use RuntimeException;
+use Throwable;
 use WP_CLI;
 
 /**
@@ -40,7 +42,12 @@ use WP_CLI;
  */
 class FixtureCommand
 {
-    /**
+	/**
+	 * @var FinderInterface
+	 */
+	private $finder;
+
+	/**
      * Force overwriting existing data (in case of collisions)
      *
      * @var bool
@@ -63,18 +70,27 @@ class FixtureCommand
      * @param FileLoaderInterface|null $loader Usually the \Nelmio\Alice\Loader\NativeLoader .
      * @param RepositoryInterface|null $repo   Taking care of read and write (in WordPress).
      */
-    public function __construct(FileLoaderInterface $loader = null, RepositoryInterface $repo = null)
-    {
-        if (null === $loader) {
-            $loader = new WordPressFixtureLoader();
+    public function __construct(
+		FileLoaderInterface $loader = null,
+		RepositoryInterface $repo = null,
+		FinderInterface $finder = null
+	)
+	{
+		if (null === $loader) {
+			$loader = new WordPressFixtureLoader();
+		}
+
+		if (null === $repo) {
+			$repo = new RepositoryFacade(new RepositoryFactory());
         }
 
-        if (null === $repo) {
-            $repo = new RepositoryFacade(new RepositoryFactory());
-        }
+        if (null === $finder) {
+        	$finder = new Finder();
+		}
 
         $this->loader = $loader;
         $this->repo = $repo;
+        $this->finder = $finder;
     }
 
     /**
@@ -99,32 +115,26 @@ class FixtureCommand
         $key = '';
         try {
             $compiled = [];
-            foreach ($yamlFiles as $path) {
-                $fixtureFiles = $this->fetchFiles($path);
-                WP_CLI::debug(sprintf('Found %d configurations in "%s"', count($fixtureFiles), $path));
+            $fixtureFiles = $this->finder->find($yamlFiles);
+			WP_CLI::debug(sprintf('Found %d configurations', count($fixtureFiles)));
+			foreach ($fixtureFiles as $fixtureFile) {
+				$fixtures = $this->loader->loadFile($fixtureFile, [], $compiled);
 
-                foreach ($fixtureFiles as $fixtureFile) {
-                    $fixtures = $this->loader->loadFile($fixtureFile, [], $compiled);
-                    WP_CLI::debug(
-                        sprintf(
-                            'Found %d new objects in %s',
-                            count($fixtures->getObjects()) - count($compiled),
-                            $fixtureFile
-                        )
-                    );
+				WP_CLI::debug(
+					sprintf(
+						'Found %d new objects in "%s"',
+						count($fixtures->getObjects()) - count($compiled),
+						$fixtureFile
+					)
+				);
 
-                    foreach ($fixtures->getObjects() as $key => $object) {
-                        if (array_key_exists($key, $compiled)) {
-                            // Duplicate keys happen because loadFile gets the already compiled
-                            continue;
-                        }
-
-                        $this->persist($object, $key);
-                        $compiled[$key] = $object;
-                    }
-                }
+				$compiled = $fixtures->getObjects();
             }
-        } catch (Exception $e) {
+
+			foreach ($compiled as $key => $fixture) {
+				$this->persist($fixture, $key);
+			}
+        } catch (Throwable $e) {
             $message = $e->getMessage();
 
             if ($key) {
@@ -144,42 +154,6 @@ class FixtureCommand
         }
 
         return $capabilities;
-    }
-
-
-    private function fetchFiles($path, $prefix = '', $suffix = '.yaml'): array
-    {
-        if (is_file($path)) {
-            if (!preg_match('/^' . preg_quote($prefix, '/') . '.*' . preg_quote($suffix, '/') . '$/', $path)) {
-                return [];
-            }
-
-            WP_CLI::debug(sprintf('Found %s', $path));
-            return [$path];
-        }
-
-        WP_CLI::debug(sprintf('Searching in %s', $path));
-
-        $files = [];
-
-        if (is_dir($path)) {
-            // Files first
-            foreach ((array) glob($path . '/' . $prefix . '*' . $suffix, GLOB_NOSORT) as $singleFile) {
-                $files[] = [$singleFile];
-            }
-
-            // Recurse in directories
-            foreach ((array) glob($path . '/*', GLOB_ONLYDIR) as $subDir) {
-                $files[] = $this->fetchFiles($subDir, $prefix, $suffix);
-            }
-        }
-
-        if (!$files) {
-            // Nothing found (standalone because array_merge(...[]) = null => wrong return type)
-            return [];
-        }
-
-        return array_merge(...$files);
     }
 
     private function persist($object, string $fixtureName)
