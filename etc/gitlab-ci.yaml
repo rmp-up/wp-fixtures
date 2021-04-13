@@ -38,8 +38,8 @@ cache:
     - rm -rf etc/phpstan # will be recovered, see "code quality"
     - composer require --dev --update-with-dependencies johnpbloch/wordpress:$WP_VERSION
     - composer install # because downloading WP may have deleted plugins
-    - vendor/bin/wp --allow-root config create --skip-check --force > /dev/null
-    - vendor/bin/wp --allow-root core multisite-install --skip-email --skip-config > /dev/null
+    - vendor/bin/wp --allow-root config create --skip-check --force
+    - vendor/bin/wp --allow-root core multisite-install --skip-email --skip-config
     - touch .multisite # activate the MS part of wp-config.php (see wp-cli.yml)
     - vendor/bin/wp --allow-root plugin activate --all --network
     # prevent artifacts upload from failing (and clean them up)
@@ -98,14 +98,21 @@ test: &test
 aberrations:
   <<: *test
   before_script:
+    # WP-CLI defined versions as PHP8 compatible that actually aren't.
+    # Fortunately version 2.4.1 (not marked as compatible) is compatible.
+    - cd etc/wp;
+      composer config platform.php 7.4.1;
+      composer require wp-cli/wp-cli:2.4.1;
+      cd ../..
     - !reference [.base, before_script]
-    - composer bin wp update --ignore-platform-reqs # WP-CLI messed up for PHP8
   parallel:
     matrix:
       - PHP_VERSION: "8.0" # Until 28 Nov 2022
-        WP_VERSION: "5.1"
+        WP_VERSION: "5.5.*"
+        # Note: lower WP versions require johnpbloch/wordpress-core-installer:1
+        #       which is incompatible with Composer 2
       - PHP_VERSION: "8.0"
-        WP_VERSION: "5.7"
+        WP_VERSION: "5.7.*"
 
 #
 # Code quality
