@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace RmpUp\WordPress\Fixtures\Test;
 
 use Nelmio\Alice\Loader\NativeLoader;
-use PHPStan\DependencyInjection\LoaderFactory;
 use RmpUp\Doc\DocParser;
 use RmpUp\WordPress\Fixtures\Helper\FixturesTrait;
 use RmpUp\WordPress\Fixtures\Repository\RepositoryInterface;
@@ -43,6 +42,27 @@ class BasicTestCase extends \RmpUp\PHPUnitCompat\TestCase
 	use TestAssertions;
 	use PhpUnitCompatibility;
 	use WordPressCompatibility;
+
+	/**
+	 * Faker creator / Stub generator
+	 *
+	 * @var NativeLoader
+	 *
+	 * @see ::alice()
+	 */
+	private $alice;
+
+	/**
+	 * @var object
+	 */
+	protected $entity;
+
+	/**
+	 * Adapter to the persistence
+	 *
+	 * @var RepositoryInterface
+	 */
+	protected $repository;
 
 	protected function compatSetUp()
 	{
@@ -135,42 +155,5 @@ class BasicTestCase extends \RmpUp\PHPUnitCompat\TestCase
 		}
 
 		return $this->repository;
-	}
-
-	/**
-	 * Faker creator / Stub generator
-	 *
-	 * @var NativeLoader
-	 *
-	 * @see ::alice()
-	 */
-	private $alice;
-
-	/**
-	 * @var object
-	 */
-	protected $entity;
-
-	/**
-	 * Adapter to the persistence
-	 *
-	 * @var RepositoryInterface
-	 */
-	protected $repository;
-
-	/**
-	 * Faker creator / Stub generator
-	 *
-	 * @return NativeLoader
-	 * @deprecated 0.8.0 Use ::fixtures() instead
-	 *
-	 */
-	protected function alice()
-	{
-		if (false === $this->alice instanceof NativeLoader) {
-			$this->alice = (new LoaderFactory())->createNativeLoader();
-		}
-
-		return $this->alice;
 	}
 }
