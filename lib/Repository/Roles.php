@@ -49,20 +49,22 @@ class Roles extends AbstractRepository
 
     /**
      * @param WP_Role $object
-     * @param string  $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      */
-    public function delete($object, string $fixtureName)
+    public function delete($object, string $fixtureName = '')
     {
     	wp_roles()->remove_role($object->name);
     }
 
     /**
      * @param WP_Role $object
-     * @param string  $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      *
      * @return string|null
      */
-    public function find($object, string $fixtureName)
+    public function find($object, string $fixtureName = '')
     {
         if (array_key_exists($object->name, $this->getCurrentValue())) {
             return $object->name;

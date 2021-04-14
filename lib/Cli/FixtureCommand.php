@@ -156,9 +156,14 @@ class FixtureCommand
         return $capabilities;
     }
 
-    private function persist($object, string $fixtureName)
+	/**
+	 * @param object $object
+	 * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
+	 */
+    private function persist($object, string $fixtureName = '')
     {
-        if (!$this->force) {
+		if (!$this->force) {
             $exists = $this->repo->find($object, $fixtureName);
 
             if (null !== $exists) {

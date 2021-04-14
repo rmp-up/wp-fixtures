@@ -60,9 +60,10 @@ class Sites extends AbstractRepository
 
     /**
      * @param WP_Site $object
-     * @param string  $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      */
-    public function delete($object, string $fixtureName)
+    public function delete($object, string $fixtureName = '')
     {
         if (null === $object->blog_id) {
             $object->blog_id = (string) domain_exists($object->domain, $object->path);
@@ -80,11 +81,12 @@ class Sites extends AbstractRepository
 
     /**
      * @param WP_Site $object
-     * @param string  $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      *
      * @return int|null
      */
-    public function find($object, string $fixtureName)
+    public function find($object, string $fixtureName = '')
     {
         foreach ((array) get_sites() as $site) {
             /** @var WP_Site $site */

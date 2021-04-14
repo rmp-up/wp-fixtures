@@ -34,9 +34,10 @@ class Comments implements RepositoryInterface
 {
     /**
      * @param WP_Comment $object
-     * @param string     $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      */
-    public function delete($object, string $fixtureName)
+    public function delete($object, string $fixtureName = '')
     {
         if (!$object->comment_ID) {
             return;
@@ -47,11 +48,12 @@ class Comments implements RepositoryInterface
 
     /**
      * @param WP_Comment  $object
-     * @param string|null $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-File
+	 *                            (deprecated, will be removed).
      *
      * @return int|void|null
      */
-    public function find($object, string $fixtureName = null)
+    public function find($object, string $fixtureName = '')
     {
         if ($object->comment_ID) {
             return (int) $object->comment_ID;
@@ -87,7 +89,8 @@ class Comments implements RepositoryInterface
 
     /**
      * @param WP_Comment  $object
-     * @param string|null $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      *
      * @return bool|false|int
      */

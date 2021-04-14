@@ -57,9 +57,10 @@ class Terms extends AbstractRepository
 
     /**
      * @param WP_Term $object
-     * @param string  $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      */
-    public function delete($object, string $fixtureName)
+    public function delete($object, string $fixtureName = '')
     {
         $temporaryTaxonomy = $this->temporaryTaxonomy($object->taxonomy);
 
@@ -81,11 +82,12 @@ class Terms extends AbstractRepository
 
     /**
      * @param WP_Term $object
-     * @param string  $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      *
      * @return int|mixed|null
      */
-    public function find($object, string $fixtureName)
+    public function find($object, string $fixtureName = '')
     {
         if ($object->term_id) {
             return $object->term_id;
@@ -120,9 +122,10 @@ class Terms extends AbstractRepository
 
     /**
      * @param WP_Term $object
-     * @param string  $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      */
-    public function persist($object, string $fixtureName)
+    public function persist($object, string $fixtureName = '')
     {
         $temporaryTaxonomy = $this->temporaryTaxonomy($object->taxonomy);
 

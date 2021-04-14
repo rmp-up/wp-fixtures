@@ -30,11 +30,12 @@ class Options extends AbstractRepository
 
     /**
      * @param Option $object Fixture to lookup.
-     * @param string $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      *
      * @return int|null ID or null when not found
      */
-    public function find($object, string $fixtureName)
+    public function find($object, string $fixtureName = '')
     {
         // There is no such thing.
         return null;
@@ -44,9 +45,10 @@ class Options extends AbstractRepository
      * Remove options
      *
      * @param Option $object      Associative property-value store.
-     * @param string $fixtureName Name of the fixture for logging purposes.
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      */
-    public function delete($object, string $fixtureName)
+    public function delete($object, string $fixtureName = '')
     {
         foreach (array_keys((array) $object) as $option) {
             delete_option($option);
