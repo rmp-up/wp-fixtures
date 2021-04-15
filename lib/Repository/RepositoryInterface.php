@@ -33,19 +33,23 @@ interface RepositoryInterface
     /**
      * @param object $object Fixture data.
      * @param string $fixtureName Key as provided in fixture config
+	 *                            (deprecated, will be removed)
      */
-    public function persist($object, string $fixtureName);
+    public function persist($object, string $fixtureName = '');
 
     /**
      * @param object $object Fixture to lookup.
-     * @param string $fixtureName
+     * @param string $fixtureName Name of the fixture
+	 *                            (deprecated, will be removed)
+	 *
      * @return mixed|null ID or null when not found
      */
-    public function find($object, string $fixtureName);
+    public function find($object, string $fixtureName = '');
 
     /**
      * @param mixed $object
-     * @param string $fixtureName
+     * @param string $fixtureName Name of the fixture
+	 *                            (deprecated, will be removed)
      */
-    public function delete($object, string $fixtureName);
+    public function delete($object, string $fixtureName = '');
 }

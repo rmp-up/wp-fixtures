@@ -70,21 +70,22 @@ abstract class AbstractRepository implements RepositoryInterface
     abstract protected function create($object): int;
 
     /**
-     * @param object      $object
-     * @param string|null $fixtureName
+     * @param object $object
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      *
      * @return Sanitizable|object
      */
-    protected function parse($object, string $fixtureName = null)
+    protected function parse($object, string $fixtureName = '')
     {
         $double = clone $object;
 
         if ($double instanceof Sanitizable) {
-            $double->sanitize((string) $fixtureName);
+            $double->sanitize($fixtureName);
         }
 
         if ($double instanceof Validatable) {
-            $double->validate((string) $fixtureName);
+            $double->validate($fixtureName);
         }
 
         return $double;
@@ -92,9 +93,10 @@ abstract class AbstractRepository implements RepositoryInterface
 
     /**
      * @param mixed  $object
-     * @param string $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      */
-    public function persist($object, string $fixtureName)
+    public function persist($object, string $fixtureName = '')
     {
         $sanitized = $this->parse($object, $fixtureName);
 

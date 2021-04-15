@@ -83,10 +83,12 @@ class Users extends AbstractRepository
 
     /**
      * @param WP_User|stdClass $object
-     * @param string|null $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
+	 *
      * @return int|null ID or null when not found.
      */
-    public function find($object, string $fixtureName = null)
+    public function find($object, string $fixtureName = '')
     {
         $found = null;
 
@@ -107,9 +109,10 @@ class Users extends AbstractRepository
 
     /**
      * @param WP_User|stdClass $object
-     * @param string $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      */
-    public function delete($object, string $fixtureName)
+    public function delete($object, string $fixtureName = '')
     {
         $id = $this->find($object, $fixtureName);
 

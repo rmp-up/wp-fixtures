@@ -42,7 +42,12 @@ class RepositoryFacade implements RepositoryInterface
         $this->factory = $factory;
     }
 
-    public function persist($object, string $fixtureName)
+	/**
+	 * @param object $object
+	 * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed).
+	 */
+    public function persist($object, string $fixtureName = '')
     {
         $this->factory->forEntity($object)->persist($object, $fixtureName);
     }
@@ -50,16 +55,17 @@ class RepositoryFacade implements RepositoryInterface
     /**
      * @inheritdoc
      */
-    public function find($object, string $fixtureName)
+    public function find($object, string $fixtureName = '')
     {
         return $this->factory->forEntity($object)->find($object, $fixtureName);
     }
 
     /**
      * @param object $object
-     * @param string $fixtureName
+     * @param string $fixtureName Name as in the Yaml-Fixture-Config
+	 *                            (deprecated, will be removed)
      */
-    public function delete($object, string $fixtureName)
+    public function delete($object, string $fixtureName = '')
     {
         return $this->factory->forEntity($object)->delete($object, $fixtureName);
     }
